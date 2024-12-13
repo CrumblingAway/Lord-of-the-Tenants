@@ -2,6 +2,8 @@ class_name Apartment extends Node2D
 
 ########## Fields. ##########
 
+var _tenants : Array[Tenant]
+
 ########## Apartment methods. ##########
 
 ########## Node2D methods. ##########
