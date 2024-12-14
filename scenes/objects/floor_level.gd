@@ -37,6 +37,10 @@ func place_tenant_in_apartment(tenant: Tenant, apartment: Apartment) -> bool:
 	
 	return true
 
+func register_tiles_as_apartment(tiles: Array[Vector2i]) -> bool:
+	_apartments.push_back(Apartment.new().init(tiles))
+	return true
+
 func _is_apartment_fit_for_tenant(apartment: Apartment, tenant: Tenant) -> bool:
 	return true
 

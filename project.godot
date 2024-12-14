@@ -15,6 +15,10 @@ run/main_scene="res://test/test_main_scene.tscn"
 config/features=PackedStringArray("4.1", "Mobile")
 config/icon="res://icon.svg"
 
+[autoload]
+
+InputManager="*res://autoloads/input_manager.gd"
+
 [rendering]
 
 renderer/rendering_method="mobile"
