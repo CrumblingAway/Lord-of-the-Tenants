@@ -16,10 +16,11 @@ var _floor_below : FloorLevel
 
 ########## FloorLevel methods. ##########
 
-func init(height: int, width: int) -> void:
+func init(height: int, width: int) -> FloorLevel:
 	for x in range(width):
 		for y in range(height):
 			_grid.set_cell(0, Vector2i(x, y), 0, Vector2i.ZERO)
+	return self
 
 func get_apartment_at_tile_position(tile_position: Vector2i) -> Apartment:
 	for apartment in _apartments:

@@ -12,6 +12,10 @@ var _tiles : Array[Vector2i]
 
 ########## Apartment methods. ##########
 
+func init(tiles: Array[Vector2i]) -> Apartment:
+	_tiles.assign(tiles)
+	return self
+
 func contains_tile_position(tile_position: Vector2i) -> bool:
 	return _tiles.has(tile_position)
 
