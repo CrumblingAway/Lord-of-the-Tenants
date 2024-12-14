@@ -7,6 +7,8 @@ signal tenant_placed_successfully
 
 ########## Fields. ##########
 
+@onready var _grid : TileMap = $TileMap
+
 var _apartments : Array[Apartment]
 
 var _floor_above : FloorLevel
