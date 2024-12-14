@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="Lord-of-the-tenants"
+run/main_scene="res://test/test_main_scene.tscn"
 config/features=PackedStringArray("4.1", "Mobile")
 config/icon="res://icon.svg"
 
