@@ -7,7 +7,7 @@ signal tenant_placed_successfully
 
 ########## Fields. ##########
 
-@onready var _grid : TileMap = $TileMap
+@onready var _tilemap : TileMap = $TileMap
 
 var _apartments : Array[Apartment]
 
@@ -19,7 +19,7 @@ var _floor_below : FloorLevel
 func init(height: int, width: int) -> FloorLevel:
 	for x in range(width):
 		for y in range(height):
-			_grid.set_cell(0, Vector2i(x, y), 0, Vector2i.ZERO)
+			_tilemap.set_cell(0, Vector2i(x, y), 0, Vector2i.ZERO)
 	return self
 
 func get_apartment_at_tile_position(tile_position: Vector2i) -> Apartment:
