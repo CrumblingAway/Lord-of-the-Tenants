@@ -27,4 +27,4 @@ func _process(delta: float) -> void:
 		Mode.LEVEL:
 			pass
 		_:
-			print("Invalid InputManager mode.")
+			pass
