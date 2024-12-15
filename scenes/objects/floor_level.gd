@@ -28,6 +28,13 @@ func get_apartment_at_tile_position(tile_position: Vector2i) -> Apartment:
 			return apartment
 	return null
 
+func highlight_apartment_at_tile_position(tile_position: Vector2i) -> void:
+	var apartment : Apartment = get_apartment_at_tile_position(tile_position)
+	if not apartment:
+		return
+	
+	
+
 func place_tenant_in_apartment(tenant: Tenant, apartment: Apartment) -> bool:
 	if not _is_apartment_fit_for_tenant(apartment, tenant):
 		return false

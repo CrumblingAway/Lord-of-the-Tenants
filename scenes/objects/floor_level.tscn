@@ -9,3 +9,11 @@ script = ExtResource("1_so2po")
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("2_78os0")
 format = 2
+layer_0/name = "Floor"
+layer_1/name = "Highlight"
+layer_1/enabled = true
+layer_1/modulate = Color(1, 1, 1, 1)
+layer_1/y_sort_enabled = false
+layer_1/y_sort_origin = 0
+layer_1/z_index = 0
+layer_1/tile_data = PackedInt32Array()
