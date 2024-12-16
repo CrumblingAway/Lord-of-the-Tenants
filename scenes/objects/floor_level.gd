@@ -32,8 +32,10 @@ func highlight_apartment_at_tile_position(tile_position: Vector2i) -> void:
 	var apartment : Apartment = get_apartment_at_tile_position(tile_position)
 	if not apartment:
 		return
-	_tilemap.set_cells_terrain_connect(1, apartment.tiles, 0, 0)
-
+	
+	var apartment_tiles : Array[Vector2i] = apartment.tiles
+	_tilemap.set_cells_terrain_connect(1, apartment.tiles, 0, 0, false)
+	
 func clear_highlight() -> void:
 	pass
 
