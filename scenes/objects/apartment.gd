@@ -8,13 +8,13 @@ var tenant : Tenant:
 	set(new_tenant):
 		tenant = new_tenant
 
-var tiles : Array[Vector2i]:
+var tiles : Array:
 	get:
 		return tiles
 
 ########## Apartment methods. ##########
 
-func init(other_tiles: Array[Vector2i]) -> Apartment:
+func init(other_tiles: Array) -> Apartment:
 	tiles.assign(other_tiles)
 	return self
 

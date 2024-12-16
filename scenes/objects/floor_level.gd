@@ -33,7 +33,7 @@ func highlight_apartment_at_tile_position(tile_position: Vector2i) -> void:
 	if not apartment:
 		return
 	
-	var apartment_tiles : Array[Vector2i] = apartment.tiles
+	var apartment_tiles : Array = apartment.tiles
 	_tilemap.set_cells_terrain_connect(1, apartment.tiles, 0, 0, false)
 	
 func clear_highlight() -> void:
@@ -48,7 +48,7 @@ func place_tenant_in_apartment(tenant: Tenant, apartment: Apartment) -> bool:
 	
 	return true
 
-func register_tiles_as_apartment(tiles: Array[Vector2i]) -> bool:
+func register_tiles_as_apartment(tiles: Array) -> bool:
 	_apartments.push_back(Apartment.new().init(tiles))
 	return true
 
