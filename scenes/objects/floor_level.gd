@@ -9,7 +9,7 @@ signal tenant_placed_successfully
 
 @onready var _tilemap : TileMap = $TileMap
 
-var _apartments : Array[Apartment]
+var _apartments : Array
 var _highlighted_apartment : Apartment
 
 var _floor_above : FloorLevel
