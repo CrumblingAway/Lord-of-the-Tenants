@@ -29,9 +29,9 @@ func _ready() -> void:
 	add_child(test)
 
 	test.test_end.connect(on_test_end)
+	print("Running test %s" % test.get_test_name())
 	test.run()
 	
-	print("Running test %s" % test.get_test_name())
 	_start_time_ms = Time.get_unix_time_from_system()
 
 func _process(delta: float) -> void:
