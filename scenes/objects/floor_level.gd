@@ -93,6 +93,8 @@ func register_tiles_as_apartment(tiles: Array) -> void:
 	_apartments.push_back(Apartment.new().init(tiles))
 
 func register_reserved_tiles_as_apartment() -> void:
+	if _reserved_tiles.size() == 0:
+		return
 	register_tiles_as_apartment(_reserved_tiles)
 	_reserved_tiles.clear()
 
