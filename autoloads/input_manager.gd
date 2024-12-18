@@ -31,11 +31,13 @@ func _process_level_input() -> bool:
 				_mode = Mode.LEVEL_SELECTING_TILES
 		Mode.LEVEL_SELECTING_TILES:
 			_floor_level.highlight_reserved_tiles()
+			# Reserve/Unreserve tiles.
 			if Input.is_action_just_pressed("left_click"):
 				if _floor_level.is_tile_at_global_position_available(mouse_position):
 					_floor_level.reserve_tile_at_global_position(mouse_position)
 				elif _floor_level.is_tile_at_global_position_reserved(mouse_position):
 					_floor_level.unreserve_tile_at_global_position(mouse_position)
+			# Register reserved tiles.
 			elif Input.is_action_just_pressed("right_click"):
 				_floor_level.register_reserved_tiles_as_apartment()
 			elif Input.is_action_just_pressed("middle_click"):
