@@ -27,7 +27,9 @@ func _process_level_input() -> bool:
 	match _mode:
 		Mode.LEVEL_IDLE:
 			_floor_level.highlight_apartment_at_global_position(mouse_position)
-			if Input.is_action_just_pressed("middle_click"):
+			if Input.is_action_just_pressed("right_click"):
+				_floor_level.remove_apartment_at_global_position(mouse_position)
+			elif Input.is_action_just_pressed("middle_click"):
 				_mode = Mode.LEVEL_SELECTING_TILES
 		Mode.LEVEL_SELECTING_TILES:
 			_floor_level.highlight_reserved_tiles()

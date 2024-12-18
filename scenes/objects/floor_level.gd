@@ -98,6 +98,13 @@ func register_reserved_tiles_as_apartment() -> void:
 	register_tiles_as_apartment(_reserved_tiles)
 	_reserved_tiles.clear()
 
+func remove_apartment_at_global_position(position: Vector2) -> void:
+	var apartment : Apartment = get_apartment_at_global_position(position)
+	if not apartment:
+		return
+	
+	_apartments.erase(apartment)
+
 func _is_apartment_fit_for_tenant(apartment: Apartment, tenant: Tenant) -> bool:
 	return true
 
