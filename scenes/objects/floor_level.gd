@@ -1,5 +1,12 @@
 class_name FloorLevel extends Node2D
 
+enum Layers
+{
+	FLOOR,
+	HIGHLIGHT,
+	COUNT,
+}
+
 ########## Signals. ##########
 
 signal tenant_apartment_mismatch(reasons: Array[String])
@@ -69,16 +76,16 @@ func highlight_apartment_at_global_position(position: Vector2) -> void:
 		clear_highlight()
 	
 	var apartment_tiles : Array = apartment.tiles
-	_tilemap.set_cells_terrain_connect(1, apartment.tiles, 0, 0, false)
+	_tilemap.set_cells_terrain_connect(Layers.HIGHLIGHT, apartment.tiles, 0, 0, false)
 	_highlighted_apartment = apartment
 
 func highlight_reserved_tiles() -> void:
 	clear_highlight()
 	for tile in _reserved_tiles:
-		_tilemap.set_cell(1, tile, 0, Vector2i(5, 3))
+		_tilemap.set_cell(Layers.HIGHLIGHT, tile, 0, Vector2i(5, 3))
 
 func clear_highlight() -> void:
-	_tilemap.clear_layer(1)
+	_tilemap.clear_layer(Layers.HIGHLIGHT)
 
 func place_tenant_in_apartment(tenant: Tenant, apartment: Apartment) -> bool:
 	if not _is_apartment_fit_for_tenant(apartment, tenant):
@@ -91,6 +98,8 @@ func place_tenant_in_apartment(tenant: Tenant, apartment: Apartment) -> bool:
 
 func register_tiles_as_apartment(tiles: Array) -> void:
 	_apartments.push_back(Apartment.new().init(tiles))
+	_tilemap.add_layer(Layers.COUNT + _apartments.size() - 1)
+	_tilemap.set_cells_terrain_connect(Layers.COUNT + _apartments.size() - 1, tiles, 0, 1, true)
 
 func register_reserved_tiles_as_apartment() -> void:
 	if _reserved_tiles.size() == 0:
@@ -103,6 +112,8 @@ func remove_apartment_at_global_position(position: Vector2) -> void:
 	if not apartment:
 		return
 	
+	var apartment_layer_idx : int = _apartments.find(apartment)
+	_tilemap.remove_layer(Layers.COUNT + apartment_layer_idx)
 	_apartments.erase(apartment)
 
 func _is_apartment_fit_for_tenant(apartment: Apartment, tenant: Tenant) -> bool:
