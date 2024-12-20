@@ -63,6 +63,9 @@ func unreserve_tile_at_global_position(position: Vector2) -> void:
 	if tile_index != -1:
 		_reserved_tiles.remove_at(tile_index)
 
+func unreserve_all_tiles() -> void:
+	_reserved_tiles.clear()
+
 func highlight_apartment_at_global_position(position: Vector2) -> void:
 	var apartment : Apartment = get_apartment_at_global_position(position)
 	if not apartment:

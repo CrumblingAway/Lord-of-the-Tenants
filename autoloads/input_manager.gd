@@ -43,6 +43,7 @@ func _process_level_input() -> bool:
 			elif Input.is_action_just_pressed("right_click"):
 				_floor_level.register_reserved_tiles_as_apartment()
 			elif Input.is_action_just_pressed("middle_click"):
+				_floor_level.unreserve_all_tiles()
 				_mode = Mode.LEVEL_IDLE
 		_:
 			pass
