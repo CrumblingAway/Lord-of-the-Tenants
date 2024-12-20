@@ -100,6 +100,8 @@ func place_tenant_in_apartment(tenant: Tenant, apartment: Apartment) -> bool:
 	return true
 
 func register_tiles_as_apartment(tiles: Array) -> void:
+	# TODO: Only allow contiguous apartments.
+	
 	_apartments.push_back(Apartment.new().init(tiles))
 	_tilemap.add_layer(Layers.COUNT + _apartments.size() - 1)
 	_tilemap.set_cells_terrain_connect(Layers.COUNT + _apartments.size() - 1, tiles, 0, 1, true)
@@ -118,6 +120,10 @@ func remove_apartment_at_global_position(position: Vector2) -> void:
 	var apartment_layer_idx : int = _apartments.find(apartment)
 	_tilemap.remove_layer(Layers.COUNT + apartment_layer_idx)
 	_apartments.erase(apartment)
+
+func _get_neighboring_apartments(apartment: Apartment) -> Array:
+	# TODO: Find neighboring apartments.
+	return []
 
 func _is_apartment_fit_for_tenant(apartment: Apartment, tenant: Tenant) -> bool:
 	return true
