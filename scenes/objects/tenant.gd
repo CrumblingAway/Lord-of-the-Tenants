@@ -7,12 +7,12 @@ const DEFAULT_NOISE_OUTPUT    : int = 1
 
 ########## Fields. ##########
 
-@export var _noise_tolerance : int = DEFAULT_NOISE_TOLERANCE:
+@export var noise_tolerance : int = DEFAULT_NOISE_TOLERANCE:
 	get:
-		return _noise_tolerance
-@export var _noise_output    : int = DEFAULT_NOISE_OUTPUT:
+		return noise_tolerance
+@export var noise_output    : int = DEFAULT_NOISE_OUTPUT:
 	get:
-		return _noise_output
+		return noise_output
 
 ########## Tenant methods. ##########
 
