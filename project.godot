@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 InputManager="*res://autoloads/input_manager.gd"
+Player="*res://autoloads/player.gd"
 
 [input]
 
