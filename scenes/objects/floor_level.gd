@@ -1,13 +1,13 @@
 class_name FloorLevel extends Node2D
 
-enum Layers
+enum Layer
 {
 	FLOOR,
 	HIGHLIGHT,
 	COUNT,
 }
 
-enum ApartmentLayers
+enum ApartmentLayer
 {
 	FLOOR,
 	WALLS,
@@ -83,13 +83,13 @@ func highlight_apartment_at_global_position(position: Vector2) -> void:
 		clear_highlight()
 	
 	var apartment_tiles : Array = apartment.tiles
-	_tilemap.set_cells_terrain_connect(Layers.HIGHLIGHT, apartment.tiles, 0, 0, false)
+	_tilemap.set_cells_terrain_connect(Layer.HIGHLIGHT, apartment.tiles, 0, 0, false)
 	_highlighted_apartment = apartment
 
 func highlight_reserved_tiles() -> void:
 	clear_highlight()
 	for tile in _reserved_tiles:
-		_tilemap.set_cell(Layers.HIGHLIGHT, tile, 0, Vector2i(5, 3))
+		_tilemap.set_cell(Layer.HIGHLIGHT, tile, 0, Vector2i(5, 3))
 
 func highlight_adjacent_apartments_to_hovered() -> void:
 	_highlight_adjacent_apartments(_highlighted_apartment)
@@ -98,7 +98,7 @@ func unhighlight_adjacent_apartments_to_hovered() -> void:
 	_unhighlight_adjacent_apartments(_highlighted_apartment)
 
 func clear_highlight() -> void:
-	_tilemap.clear_layer(Layers.HIGHLIGHT)
+	_tilemap.clear_layer(Layer.HIGHLIGHT)
 
 func place_tenant_in_apartment(tenant: Tenant, apartment: Apartment) -> bool:
 	if not _is_apartment_fit_for_tenant(apartment, tenant):
@@ -115,7 +115,7 @@ func register_tiles_as_apartment(tiles: Array) -> void:
 	var apartment : Apartment = Apartment.new().init(tiles)
 	_apartments.push_back(apartment)
 	_add_apartment_layers()
-	_tilemap.set_cells_terrain_connect(_get_apartment_floor_layer(apartment) + ApartmentLayers.WALLS, tiles, 0, 1, true)
+	_tilemap.set_cells_terrain_connect(_get_apartment_floor_layer(apartment, ApartmentLayer.WALLS), tiles, 0, 1, true)
 
 func register_reserved_tiles_as_apartment() -> void:
 	if _reserved_tiles.size() == 0:
@@ -137,6 +137,21 @@ func _get_apartment_at_tile_position(tile: Vector2i) -> Apartment:
 		if apartment.contains_tile_position(tile):
 			return apartment
 	return null
+
+func _get_noise_input_in_apartment(apartment: Apartment) -> int:
+	var noise_input : int = 0
+	
+	var adjacent_apartments : Array = _get_adjacent_apartments(apartment)
+	for adjacent_apartment in adjacent_apartments:
+		noise_input += _get_noise_output_from_apartment(adjacent_apartment)
+	var below_apartments : Array = _get_apartments_below(apartment)
+	for apartment_below in below_apartments:
+		noise_input += _floor_below._get_noise_output_from_apartment(apartment_below)
+	
+	return noise_input
+
+func _get_noise_output_from_apartment(apartment: Apartment) -> int:
+	return 0 if apartment.tenant == null else apartment.tenant.noise_output
 
 func _get_adjacent_apartments(apartment: Apartment) -> Array:
 	var adjacent_apartments : Array = []
@@ -163,14 +178,14 @@ func _get_apartments_below(apartment: Apartment) -> Array:
 	return apartments_below
 
 func _is_apartment_fit_for_tenant(apartment: Apartment, tenant: Tenant) -> bool:
-	return true
+	return _get_noise_input_in_apartment(apartment) <= tenant.noise_tolerance
 
 func _highlight_adjacent_apartments(apartment: Apartment) -> void:
 	var adjacent_apartments : Array = _get_adjacent_apartments(apartment)
 	for adjacent_apartment in adjacent_apartments:
 		var adjacent_apartment_idx : int = _apartments.find(adjacent_apartment)
 		_tilemap.set_cells_terrain_connect(
-			_get_apartment_floor_layer(adjacent_apartment) + ApartmentLayers.HIGHLIGHT,
+			_get_apartment_floor_layer(adjacent_apartment, ApartmentLayer.HIGHLIGHT),
 			adjacent_apartment.tiles,
 			0,
 			2,
@@ -181,20 +196,20 @@ func _unhighlight_adjacent_apartments(apartment: Apartment) -> void:
 	var adjacent_apartments : Array = _get_adjacent_apartments(apartment)
 	for adjacent_apartment in adjacent_apartments:
 		var adjacent_apartment_idx : int = _apartments.find(adjacent_apartment)
-		_tilemap.clear_layer(_get_apartment_floor_layer(adjacent_apartment) + ApartmentLayers.HIGHLIGHT)
+		_tilemap.clear_layer(_get_apartment_floor_layer(adjacent_apartment, ApartmentLayer.HIGHLIGHT))
 
-func _get_apartment_floor_layer(apartment: Apartment) -> int:
+func _get_apartment_floor_layer(apartment: Apartment, layer: ApartmentLayer) -> int:
 	var apartment_idx : int = _apartments.find(apartment)
 	assert(apartment_idx != -1, "Apartment not found.")
-	return Layers.COUNT + ApartmentLayers.COUNT * apartment_idx
+	return Layer.COUNT + ApartmentLayer.COUNT * apartment_idx + layer
 
 func _add_apartment_layers() -> void:
-	for layer_idx in range(ApartmentLayers.COUNT):
+	for layer_idx in range(ApartmentLayer.COUNT):
 		_tilemap.add_layer(_tilemap.get_layers_count())
 
 func _remove_apartment_layers(apartment: Apartment) -> void:
-	var apartment_floor_layer : int = _get_apartment_floor_layer(apartment)
-	for _layer_idx in range(ApartmentLayers.COUNT):
+	var apartment_floor_layer : int = _get_apartment_floor_layer(apartment, ApartmentLayer.FLOOR)
+	for _layer_idx in range(ApartmentLayer.COUNT):
 		_tilemap.remove_layer(apartment_floor_layer)
 
 ########## Node2D methods. ##########
