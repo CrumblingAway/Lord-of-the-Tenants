@@ -91,6 +91,12 @@ func highlight_reserved_tiles() -> void:
 	for tile in _reserved_tiles:
 		_tilemap.set_cell(Layers.HIGHLIGHT, tile, 0, Vector2i(5, 3))
 
+func highlight_adjacent_apartments_to_hovered() -> void:
+	_highlight_adjacent_apartments(_highlighted_apartment)
+
+func unhighlight_adjacent_apartments_to_hovered() -> void:
+	_unhighlight_adjacent_apartments(_highlighted_apartment)
+
 func clear_highlight() -> void:
 	_tilemap.clear_layer(Layers.HIGHLIGHT)
 
@@ -126,18 +132,57 @@ func remove_apartment_at_global_position(position: Vector2) -> void:
 	_remove_apartment_layers(apartment)
 	_apartments.erase(apartment)
 
-func _get_neighboring_apartments(apartment: Apartment) -> Array:
-	# TODO: Find neighboring apartments.
-	return []
 func _get_apartment_at_tile_position(tile: Vector2i) -> Apartment:
 	for apartment in _apartments:
 		if apartment.contains_tile_position(tile):
 			return apartment
 	return null
 
+func _get_adjacent_apartments(apartment: Apartment) -> Array:
+	var adjacent_apartments : Array = []
+	
+	var four_connectivity : Array = [
+		Vector2i.UP,
+		Vector2i.DOWN,
+		Vector2i.LEFT,
+		Vector2i.RIGHT,
+	]
+	for tile in apartment.tiles:
+		for direction in four_connectivity:
+			var adjacent_apartment : Apartment = _get_apartment_at_tile_position(tile + direction)
+			if adjacent_apartment \
+			   and not apartment == adjacent_apartment \
+			   and not adjacent_apartments.has(adjacent_apartment):
+				adjacent_apartments.push_back(adjacent_apartment)
+	return adjacent_apartments
+
+func _get_apartments_below(apartment: Apartment) -> Array:
+	var apartments_below : Array = []
+	for tile in apartment.tiles:
+		apartments_below.push_back(_floor_below._get_apartment_at_tile_position(tile))
+	return apartments_below
 
 func _is_apartment_fit_for_tenant(apartment: Apartment, tenant: Tenant) -> bool:
 	return true
+
+func _highlight_adjacent_apartments(apartment: Apartment) -> void:
+	var adjacent_apartments : Array = _get_adjacent_apartments(apartment)
+	for adjacent_apartment in adjacent_apartments:
+		var adjacent_apartment_idx : int = _apartments.find(adjacent_apartment)
+		_tilemap.set_cells_terrain_connect(
+			_get_apartment_floor_layer(adjacent_apartment) + ApartmentLayers.HIGHLIGHT,
+			adjacent_apartment.tiles,
+			0,
+			2,
+			true
+		)
+
+func _unhighlight_adjacent_apartments(apartment: Apartment) -> void:
+	var adjacent_apartments : Array = _get_adjacent_apartments(apartment)
+	for adjacent_apartment in adjacent_apartments:
+		var adjacent_apartment_idx : int = _apartments.find(adjacent_apartment)
+		_tilemap.clear_layer(_get_apartment_floor_layer(adjacent_apartment) + ApartmentLayers.HIGHLIGHT)
+
 func _get_apartment_floor_layer(apartment: Apartment) -> int:
 	var apartment_idx : int = _apartments.find(apartment)
 	assert(apartment_idx != -1, "Apartment not found.")
