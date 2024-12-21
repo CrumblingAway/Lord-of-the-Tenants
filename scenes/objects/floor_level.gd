@@ -33,11 +33,7 @@ func init(height: int, width: int) -> FloorLevel:
 	return self
 
 func get_apartment_at_global_position(position: Vector2) -> Apartment:
-	var tile_position : Vector2i = _tilemap.local_to_map(position)
-	for apartment in _apartments:
-		if apartment.contains_tile_position(tile_position):
-			return apartment
-	return null
+	return _get_apartment_at_tile_position(_tilemap.local_to_map(position))
 
 func is_tile_at_global_position_available(position: Vector2) -> bool:
 	var tile_position = _tilemap.local_to_map(position)
@@ -124,6 +120,12 @@ func remove_apartment_at_global_position(position: Vector2) -> void:
 func _get_neighboring_apartments(apartment: Apartment) -> Array:
 	# TODO: Find neighboring apartments.
 	return []
+func _get_apartment_at_tile_position(tile: Vector2i) -> Apartment:
+	for apartment in _apartments:
+		if apartment.contains_tile_position(tile):
+			return apartment
+	return null
+
 
 func _is_apartment_fit_for_tenant(apartment: Apartment, tenant: Tenant) -> bool:
 	return true
