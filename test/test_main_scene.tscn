@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://cv7py3hitfxf7"]
 
 [ext_resource type="Script" path="res://test/test_main_scene.gd" id="1_2ot6c"]
-[ext_resource type="PackedScene" uid="uid://bm10pa52ho24n" path="res://test/test_floorlevel_create.tscn" id="2_pn1j4"]
+[ext_resource type="PackedScene" uid="uid://bjw8fj378fgvo" path="res://test/test_tenant_placement.tscn" id="2_1w0ho"]
 
 [node name="test_main_scene" type="Node2D"]
 script = ExtResource("1_2ot6c")
-test_scene = ExtResource("2_pn1j4")
+test_scene = ExtResource("2_1w0ho")
 exit_on_test_end = false
