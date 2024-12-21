@@ -7,6 +7,14 @@ enum Layers
 	COUNT,
 }
 
+enum ApartmentLayers
+{
+	FLOOR,
+	WALLS,
+	HIGHLIGHT,
+	COUNT,
+}
+
 ########## Signals. ##########
 
 signal tenant_apartment_mismatch(reasons: Array[String])
@@ -98,9 +106,10 @@ func place_tenant_in_apartment(tenant: Tenant, apartment: Apartment) -> bool:
 func register_tiles_as_apartment(tiles: Array) -> void:
 	# TODO: Only allow contiguous apartments.
 	
-	_apartments.push_back(Apartment.new().init(tiles))
-	_tilemap.add_layer(Layers.COUNT + _apartments.size() - 1)
-	_tilemap.set_cells_terrain_connect(Layers.COUNT + _apartments.size() - 1, tiles, 0, 1, true)
+	var apartment : Apartment = Apartment.new().init(tiles)
+	_apartments.push_back(apartment)
+	_add_apartment_layers()
+	_tilemap.set_cells_terrain_connect(_get_apartment_floor_layer(apartment) + ApartmentLayers.WALLS, tiles, 0, 1, true)
 
 func register_reserved_tiles_as_apartment() -> void:
 	if _reserved_tiles.size() == 0:
@@ -114,7 +123,7 @@ func remove_apartment_at_global_position(position: Vector2) -> void:
 		return
 	
 	var apartment_layer_idx : int = _apartments.find(apartment)
-	_tilemap.remove_layer(Layers.COUNT + apartment_layer_idx)
+	_remove_apartment_layers(apartment)
 	_apartments.erase(apartment)
 
 func _get_neighboring_apartments(apartment: Apartment) -> Array:
@@ -129,6 +138,19 @@ func _get_apartment_at_tile_position(tile: Vector2i) -> Apartment:
 
 func _is_apartment_fit_for_tenant(apartment: Apartment, tenant: Tenant) -> bool:
 	return true
+func _get_apartment_floor_layer(apartment: Apartment) -> int:
+	var apartment_idx : int = _apartments.find(apartment)
+	assert(apartment_idx != -1, "Apartment not found.")
+	return Layers.COUNT + ApartmentLayers.COUNT * apartment_idx
+
+func _add_apartment_layers() -> void:
+	for layer_idx in range(ApartmentLayers.COUNT):
+		_tilemap.add_layer(_tilemap.get_layers_count())
+
+func _remove_apartment_layers(apartment: Apartment) -> void:
+	var apartment_floor_layer : int = _get_apartment_floor_layer(apartment)
+	for _layer_idx in range(ApartmentLayers.COUNT):
+		_tilemap.remove_layer(apartment_floor_layer)
 
 ########## Node2D methods. ##########
 
