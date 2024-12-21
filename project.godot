@@ -17,8 +17,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-InputManager="*res://autoloads/input_manager.gd"
+Utils="*res://autoloads/utils.gd"
 Player="*res://autoloads/player.gd"
+InputManager="*res://autoloads/input_manager.gd"
 
 [input]
 

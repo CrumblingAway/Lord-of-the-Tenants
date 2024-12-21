@@ -13,7 +13,7 @@ enum Mode
 var _mode : Mode = Mode.COUNT:
 	set(mode):
 		_mode = mode
-		print_mode()
+		Utils.printdbg("Input mode: %s" % mode_to_string(_mode))
 func mode_to_string(mode: Mode) -> String:
 	match _mode:
 		Mode.MENU:
@@ -52,8 +52,13 @@ func _process_level_input() -> bool:
 				_mode = Mode.LEVEL_SELECTING_TILES
 		Mode.LEVEL_PLACING_TENANT:
 			if Input.is_action_just_pressed("left_click"):
+				# TODO: Place tenant.
+				
 				_floor_level.unhighlight_adjacent_apartments_to_hovered()
 				_mode = Mode.LEVEL_IDLE
+			if Input.is_action_just_pressed("right_click"):
+				# TODO: Remove tenant.
+				pass
 		Mode.LEVEL_SELECTING_TILES:
 			_floor_level.highlight_reserved_tiles()
 			# Reserve/Unreserve tiles.
@@ -73,14 +78,10 @@ func _process_level_input() -> bool:
 	
 	return true
 
-func print_mode() -> void:
-	if OS.is_debug_build():
-		print("Input manager mode: %s" % mode_to_string(_mode))
-
 ########## Node methods. ##########
 
 func _ready() -> void:
-	print_mode()
+	Utils.printdbg("Input mode: %s" % mode_to_string(_mode))
 
 func _process(delta: float) -> void:
 	match _mode:
