@@ -17,6 +17,6 @@ func get_test_name() -> String:
 func _ready() -> void:
 	pass
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 

@@ -29,7 +29,6 @@ var _highlighted_apartment : Apartment
 
 var _reserved_tiles : Array
 
-var _floor_above : FloorLevel
 var _floor_below : FloorLevel
 
 ########## FloorLevel methods. ##########
@@ -40,11 +39,11 @@ func init(height: int, width: int) -> FloorLevel:
 			_tilemap.set_cell(0, Vector2i(x, y), 0, Vector2i.ZERO)
 	return self
 
-func get_apartment_at_global_position(position: Vector2) -> Apartment:
-	return _get_apartment_at_tile_position(_tilemap.local_to_map(position))
+func get_apartment_at_global_position(glb_position: Vector2) -> Apartment:
+	return _get_apartment_at_tile_position(_tilemap.local_to_map(glb_position))
 
-func is_tile_at_global_position_available(position: Vector2) -> bool:
-	var tile_position = _tilemap.local_to_map(position)
+func is_tile_at_global_position_available(glb_position: Vector2) -> bool:
+	var tile_position = _tilemap.local_to_map(glb_position)
 	if not _tilemap.get_used_cells(0).has(tile_position):
 		return false
 	
@@ -56,22 +55,22 @@ func is_tile_at_global_position_available(position: Vector2) -> bool:
 			return false
 	return true
 
-func is_tile_at_global_position_reserved(position: Vector2) -> bool:
-	return _reserved_tiles.has(_tilemap.local_to_map(position))
+func is_tile_at_global_position_reserved(glb_position: Vector2) -> bool:
+	return _reserved_tiles.has(_tilemap.local_to_map(glb_position))
 
-func reserve_tile_at_global_position(position: Vector2) -> void:
-	_reserved_tiles.push_back(_tilemap.local_to_map(position))
+func reserve_tile_at_global_position(glb_position: Vector2) -> void:
+	_reserved_tiles.push_back(_tilemap.local_to_map(glb_position))
 
-func unreserve_tile_at_global_position(position: Vector2) -> void:
-	var tile_index : int = _reserved_tiles.find(_tilemap.local_to_map(position))
+func unreserve_tile_at_global_position(glb_position: Vector2) -> void:
+	var tile_index : int = _reserved_tiles.find(_tilemap.local_to_map(glb_position))
 	if tile_index != -1:
 		_reserved_tiles.remove_at(tile_index)
 
 func unreserve_all_tiles() -> void:
 	_reserved_tiles.clear()
 
-func highlight_apartment_at_global_position(position: Vector2) -> void:
-	var apartment : Apartment = get_apartment_at_global_position(position)
+func highlight_apartment_at_global_position(glb_position: Vector2) -> void:
+	var apartment : Apartment = get_apartment_at_global_position(glb_position)
 	if not apartment:
 		clear_highlight()
 		_highlighted_apartment = null
@@ -82,7 +81,6 @@ func highlight_apartment_at_global_position(position: Vector2) -> void:
 	else:
 		clear_highlight()
 	
-	var apartment_tiles : Array = apartment.tiles
 	_tilemap.set_cells_terrain_connect(Layer.HIGHLIGHT, apartment.tiles, 0, 0, false)
 	_highlighted_apartment = apartment
 
@@ -123,12 +121,11 @@ func register_reserved_tiles_as_apartment() -> void:
 	register_tiles_as_apartment(_reserved_tiles)
 	_reserved_tiles.clear()
 
-func remove_apartment_at_global_position(position: Vector2) -> void:
-	var apartment : Apartment = get_apartment_at_global_position(position)
+func remove_apartment_at_global_position(glb_position: Vector2) -> void:
+	var apartment : Apartment = get_apartment_at_global_position(glb_position)
 	if not apartment:
 		return
 	
-	var apartment_layer_idx : int = _apartments.find(apartment)
 	_remove_apartment_layers(apartment)
 	_apartments.erase(apartment)
 
@@ -186,7 +183,6 @@ func _is_apartment_fit_for_tenant(apartment: Apartment, tenant: Tenant) -> bool:
 func _highlight_adjacent_apartments(apartment: Apartment) -> void:
 	var adjacent_apartments : Array = _get_adjacent_apartments(apartment)
 	for adjacent_apartment in adjacent_apartments:
-		var adjacent_apartment_idx : int = _apartments.find(adjacent_apartment)
 		_tilemap.set_cells_terrain_connect(
 			_get_apartment_floor_layer(adjacent_apartment, ApartmentLayer.HIGHLIGHT),
 			adjacent_apartment.tiles,
@@ -198,7 +194,6 @@ func _highlight_adjacent_apartments(apartment: Apartment) -> void:
 func _unhighlight_adjacent_apartments(apartment: Apartment) -> void:
 	var adjacent_apartments : Array = _get_adjacent_apartments(apartment)
 	for adjacent_apartment in adjacent_apartments:
-		var adjacent_apartment_idx : int = _apartments.find(adjacent_apartment)
 		_tilemap.clear_layer(_get_apartment_floor_layer(adjacent_apartment, ApartmentLayer.HIGHLIGHT))
 
 func _get_apartment_floor_layer(apartment: Apartment, layer: ApartmentLayer) -> int:
@@ -220,6 +215,6 @@ func _remove_apartment_layers(apartment: Apartment) -> void:
 func _ready() -> void:
 	pass
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 

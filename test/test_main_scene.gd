@@ -34,5 +34,5 @@ func _ready() -> void:
 	
 	_start_time_ms = Time.get_unix_time_from_system()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass

@@ -15,7 +15,7 @@ var _mode : Mode = Mode.COUNT:
 		_mode = mode
 		Utils.printdbg("Input mode: %s" % mode_to_string(_mode))
 func mode_to_string(mode: Mode) -> String:
-	match _mode:
+	match mode:
 		Mode.MENU:
 			return "MENU"
 		Mode.LEVEL_IDLE:
@@ -83,7 +83,7 @@ func _process_level_input() -> bool:
 func _ready() -> void:
 	Utils.printdbg("Input mode: %s" % mode_to_string(_mode))
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	match _mode:
 		Mode.MENU:
 			pass

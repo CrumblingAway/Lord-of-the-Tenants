@@ -16,9 +16,9 @@ const DEFAULT_NOISE_OUTPUT    : int = 1
 
 ########## Tenant methods. ##########
 
-func init(noise_tolerance: int, noise_output: int) -> Tenant:
-	self.noise_tolerance = noise_tolerance
-	self.noise_output    = noise_output
+func init(other_noise_tolerance: int, other_noise_output: int) -> Tenant:
+	self.noise_tolerance = other_noise_tolerance
+	self.noise_output    = other_noise_output
 	
 	return self
 
@@ -27,5 +27,5 @@ func init(noise_tolerance: int, noise_output: int) -> Tenant:
 func _ready() -> void:
 	pass
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass

@@ -16,8 +16,8 @@ var tiles : Array:
 
 ########## Apartment methods. ##########
 
-func init(tiles: Array) -> Apartment:
-	self.tiles.assign(tiles)
+func init(other_tiles: Array) -> Apartment:
+	self.tiles.assign(other_tiles)
 	
 	# TODO: Generate path for tenant walking animation.
 	
@@ -31,6 +31,6 @@ func contains_tile_position(tile_position: Vector2i) -> bool:
 func _ready() -> void:
 	pass
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 
