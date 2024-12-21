@@ -44,13 +44,13 @@ func _process_level_input() -> bool:
 			_floor_level.highlight_apartment_at_global_position(mouse_position)
 			if Input.is_action_just_pressed("left_click"):
 				if _floor_level.get_apartment_at_global_position(mouse_position):
+					_floor_level.highlight_adjacent_apartments_to_hovered()
 					_mode = Mode.LEVEL_PLACING_TENANT
 			elif Input.is_action_just_pressed("right_click"):
 				_floor_level.remove_apartment_at_global_position(mouse_position)
 			elif Input.is_action_just_pressed("middle_click"):
 				_mode = Mode.LEVEL_SELECTING_TILES
 		Mode.LEVEL_PLACING_TENANT:
-			_floor_level.highlight_adjacent_apartments_to_hovered()
 			if Input.is_action_just_pressed("left_click"):
 				_floor_level.unhighlight_adjacent_apartments_to_hovered()
 				_mode = Mode.LEVEL_IDLE
