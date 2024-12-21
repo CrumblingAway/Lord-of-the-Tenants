@@ -16,6 +16,12 @@ const DEFAULT_NOISE_OUTPUT    : int = 1
 
 ########## Tenant methods. ##########
 
+func init(noise_tolerance: int, noise_output: int) -> Tenant:
+	self.noise_tolerance = noise_tolerance
+	self.noise_output    = noise_output
+	
+	return self
+
 ########## Node2D methods. ##########
 
 func _ready() -> void:
