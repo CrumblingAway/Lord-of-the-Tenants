@@ -172,6 +172,9 @@ func _get_adjacent_apartments(apartment: Apartment) -> Array:
 	return adjacent_apartments
 
 func _get_apartments_below(apartment: Apartment) -> Array:
+	if not _floor_below:
+		return []
+	
 	var apartments_below : Array = []
 	for tile in apartment.tiles:
 		apartments_below.push_back(_floor_below._get_apartment_at_tile_position(tile))
