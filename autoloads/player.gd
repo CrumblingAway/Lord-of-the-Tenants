@@ -8,6 +8,12 @@ var money : int:
 	set(new_money):
 		money = new_money
 
+var tenants : Array:
+	get:
+		return tenants
+	set(new_tenants):
+		tenants = new_tenants
+
 ########## Player methods. ##########
 
 ########## Node methods. ##########
@@ -15,6 +21,6 @@ var money : int:
 func _ready() -> void:
 	pass
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 

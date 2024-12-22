@@ -86,7 +86,6 @@ func run() -> void:
 		floor_level.register_tiles_as_apartment(apartment_tiles)
 	
 	var tenants : Array = Array([], TYPE_OBJECT, "Tenant", Tenant)
-	
 
 func get_test_name() -> String:
 	return "Place Tenant"
@@ -97,5 +96,5 @@ func _ready() -> void:
 	floor_level = preload("res://scenes/objects/floor_level.tscn").instantiate()
 	add_child(floor_level)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
