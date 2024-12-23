@@ -26,6 +26,9 @@ func init(other_tiles: Array) -> Apartment:
 func get_noise_output() -> int:
 	return 0 if not tenant else tenant.noise_output
 
+func clear_tenant() -> void:
+	tenant = null
+
 func contains_tile_position(tile_position: Vector2i) -> bool:
 	return tiles.has(tile_position)
 

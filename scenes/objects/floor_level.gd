@@ -40,7 +40,13 @@ func init(height: int, width: int) -> FloorLevel:
 	return self
 
 func get_apartment_at_global_position(glb_position: Vector2) -> Apartment:
-	return _get_apartment_at_tile_position(_tilemap.local_to_map(glb_position))
+	return get_apartment_at_tile_position(_tilemap.local_to_map(glb_position))
+
+func get_apartment_at_tile_position(tile: Vector2i) -> Apartment:
+	for apartment in _apartments:
+		if apartment.contains_tile_position(tile):
+			return apartment
+	return null
 
 func is_tile_at_global_position_available(glb_position: Vector2) -> bool:
 	var tile_position = _tilemap.local_to_map(glb_position)
@@ -107,6 +113,13 @@ func place_tenant_in_apartment(tenant: Tenant, apartment: Apartment) -> bool:
 	
 	return true
 
+func clear_tenants() -> void:
+	for apartment in _apartments:
+		apartment.clear_tenant()
+
+func clear_tenant(apartment: Apartment) -> void:
+	apartment.clear_tenant()
+
 func register_tiles_as_apartment(tiles: Array) -> void:
 	# TODO: Only allow contiguous apartments.
 	
@@ -161,7 +174,7 @@ func _get_adjacent_apartments(apartment: Apartment) -> Array:
 	]
 	for tile in apartment.tiles:
 		for direction in four_connectivity:
-			var adjacent_apartment : Apartment = _get_apartment_at_tile_position(tile + direction)
+			var adjacent_apartment : Apartment = get_apartment_at_tile_position(tile + direction)
 			if adjacent_apartment \
 			   and not apartment == adjacent_apartment \
 			   and not adjacent_apartments.has(adjacent_apartment):
@@ -192,14 +205,14 @@ func _highlight_adjacent_apartments(apartment: Apartment) -> void:
 		)
 	
 	Utils.printdbg(
-		"Adjacent noise: %s",
+		"Output noise: %d, Input noise: %s",
 		func(): 
 			var total_noise : int = 0
 			var noises : Array = []
 			for adjacent_apartment in adjacent_apartments:
 				total_noise += adjacent_apartment.get_noise_output()
 				noises.push_back(str(adjacent_apartment.get_noise_output()))
-			return "%d [%s]" % [total_noise, noises.reduce(func(accum: String, noise: String): return accum + " " + noise)]
+			return [apartment.get_noise_output(), "%d [%s]" % [total_noise, noises.reduce(func(accum: String, noise: String): return accum + " " + noise)]]
 	)
 
 func _unhighlight_adjacent_apartments(apartment: Apartment) -> void:
