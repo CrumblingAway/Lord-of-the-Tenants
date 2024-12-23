@@ -136,17 +136,12 @@ func register_reserved_tiles_as_apartment() -> void:
 
 func remove_apartment_at_global_position(glb_position: Vector2) -> void:
 	var apartment : Apartment = get_apartment_at_global_position(glb_position)
-	if not apartment:
+	if not apartment \
+	   or apartment.tenant:
 		return
 	
 	_remove_apartment_layers(apartment)
 	_apartments.erase(apartment)
-
-func _get_apartment_at_tile_position(tile: Vector2i) -> Apartment:
-	for apartment in _apartments:
-		if apartment.contains_tile_position(tile):
-			return apartment
-	return null
 
 func _get_noise_input_in_apartment(apartment: Apartment) -> int:
 	var noise_input : int = 0
@@ -191,7 +186,8 @@ func _get_apartments_below(apartment: Apartment) -> Array:
 	return apartments_below
 
 func _is_apartment_fit_for_tenant(apartment: Apartment, tenant: Tenant) -> bool:
-	return _get_noise_input_in_apartment(apartment) <= tenant.noise_tolerance
+	return apartment.tenant == null \
+		   and _get_noise_input_in_apartment(apartment) <= tenant.noise_tolerance
 
 func _highlight_adjacent_apartments(apartment: Apartment) -> void:
 	var adjacent_apartments : Array = _get_adjacent_apartments(apartment)
