@@ -1,14 +1,14 @@
 class_name TestTenantPlacement extends Test
 
-var floor_level : FloorLevel
+var building_floor : BuildingFloor
 
 ########## Test methods. ##########
 
 func run() -> void:
 	InputManager._mode = InputManager.Mode.LEVEL_IDLE
-	InputManager._floor_level = floor_level
+	InputManager._building_floor = building_floor
 	
-	floor_level.init(10, 10)
+	building_floor.init(10, 10)
 	
 	var apartments_tiles : Array = [
 		[
@@ -83,7 +83,7 @@ func run() -> void:
 		],
 	]
 	for apartment_tiles in apartments_tiles:
-		floor_level.register_tiles_as_apartment(apartment_tiles)
+		building_floor.register_tiles_as_apartment(apartment_tiles)
 	
 	var tenants : Array = [
 		Tenant.new().init(5, 1),
@@ -93,12 +93,12 @@ func run() -> void:
 		Tenant.new().init(1, 1),
 	]
 	
-	_print_apartment_placement(floor_level.place_tenant_in_apartment(tenants[0], floor_level.get_apartment_at_tile_position(apartments_tiles[3][0])))
-	_print_apartment_placement(floor_level.place_tenant_in_apartment(tenants[1], floor_level.get_apartment_at_tile_position(apartments_tiles[3][0])))
-	_print_apartment_placement(floor_level.place_tenant_in_apartment(tenants[1], floor_level.get_apartment_at_tile_position(apartments_tiles[7][0])))
-	_print_apartment_placement(floor_level.place_tenant_in_apartment(tenants[2], floor_level.get_apartment_at_tile_position(apartments_tiles[6][0])))
-	_print_apartment_placement(floor_level.place_tenant_in_apartment(tenants[3], floor_level.get_apartment_at_tile_position(apartments_tiles[2][0])))
-	_print_apartment_placement(floor_level.place_tenant_in_apartment(tenants[4], floor_level.get_apartment_at_tile_position(apartments_tiles[2][0])))
+	_print_apartment_placement(building_floor.place_tenant_in_apartment(tenants[0], building_floor.get_apartment_at_tile_position(apartments_tiles[3][0])))
+	_print_apartment_placement(building_floor.place_tenant_in_apartment(tenants[1], building_floor.get_apartment_at_tile_position(apartments_tiles[3][0])))
+	_print_apartment_placement(building_floor.place_tenant_in_apartment(tenants[1], building_floor.get_apartment_at_tile_position(apartments_tiles[7][0])))
+	_print_apartment_placement(building_floor.place_tenant_in_apartment(tenants[2], building_floor.get_apartment_at_tile_position(apartments_tiles[6][0])))
+	_print_apartment_placement(building_floor.place_tenant_in_apartment(tenants[3], building_floor.get_apartment_at_tile_position(apartments_tiles[2][0])))
+	_print_apartment_placement(building_floor.place_tenant_in_apartment(tenants[4], building_floor.get_apartment_at_tile_position(apartments_tiles[2][0])))
 
 func get_test_name() -> String:
 	return "Place Tenant"
@@ -111,8 +111,8 @@ func _print_apartment_placement(success: bool):
 ########## Node methods. ##########
 
 func _ready() -> void:
-	floor_level = preload("res://scenes/objects/floor_level.tscn").instantiate()
-	add_child(floor_level)
+	building_floor = preload("res://scenes/objects/building_floor.tscn").instantiate()
+	add_child(building_floor)
 
 func _process(_delta: float) -> void:
 	pass

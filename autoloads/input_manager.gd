@@ -29,49 +29,49 @@ func mode_to_string(mode: Mode) -> String:
 	
 	return "Invalid mode."
 
-var _floor_level : FloorLevel
+var _building_floor : BuildingFloor
 
 ########## InputManager methods. ##########
 
 func _process_level_input() -> bool:
-	if not _floor_level:
+	if not _building_floor:
 		return false
 	
 	var mouse_position : Vector2 = get_viewport().get_mouse_position()
 	
 	match _mode:
 		Mode.LEVEL_IDLE:
-			_floor_level.highlight_apartment_at_global_position(mouse_position)
+			_building_floor.highlight_apartment_at_global_position(mouse_position)
 			if Input.is_action_just_pressed("left_click"):
-				if _floor_level.get_apartment_at_global_position(mouse_position):
-					_floor_level.highlight_adjacent_apartments_to_hovered()
+				if _building_floor.get_apartment_at_global_position(mouse_position):
+					_building_floor.highlight_adjacent_apartments_to_hovered()
 					_mode = Mode.LEVEL_PLACING_TENANT
 			elif Input.is_action_just_pressed("right_click"):
-				_floor_level.remove_apartment_at_global_position(mouse_position)
+				_building_floor.remove_apartment_at_global_position(mouse_position)
 			elif Input.is_action_just_pressed("middle_click"):
 				_mode = Mode.LEVEL_SELECTING_TILES
 		Mode.LEVEL_PLACING_TENANT:
 			if Input.is_action_just_pressed("left_click"):
 				# TODO: Place tenant.
 				
-				_floor_level.unhighlight_adjacent_apartments_to_hovered()
+				_building_floor.unhighlight_adjacent_apartments_to_hovered()
 				_mode = Mode.LEVEL_IDLE
 			if Input.is_action_just_pressed("right_click"):
 				# TODO: Remove tenant.
 				pass
 		Mode.LEVEL_SELECTING_TILES:
-			_floor_level.highlight_reserved_tiles()
+			_building_floor.highlight_reserved_tiles()
 			# Reserve/Unreserve tiles.
 			if Input.is_action_just_pressed("left_click"):
-				if _floor_level.is_tile_at_global_position_available(mouse_position):
-					_floor_level.reserve_tile_at_global_position(mouse_position)
-				elif _floor_level.is_tile_at_global_position_reserved(mouse_position):
-					_floor_level.unreserve_tile_at_global_position(mouse_position)
+				if _building_floor.is_tile_at_global_position_available(mouse_position):
+					_building_floor.reserve_tile_at_global_position(mouse_position)
+				elif _building_floor.is_tile_at_global_position_reserved(mouse_position):
+					_building_floor.unreserve_tile_at_global_position(mouse_position)
 			# Register reserved tiles.
 			elif Input.is_action_just_pressed("right_click"):
-				_floor_level.register_reserved_tiles_as_apartment()
+				_building_floor.register_reserved_tiles_as_apartment()
 			elif Input.is_action_just_pressed("middle_click"):
-				_floor_level.unreserve_all_tiles()
+				_building_floor.unreserve_all_tiles()
 				_mode = Mode.LEVEL_IDLE
 		_:
 			pass

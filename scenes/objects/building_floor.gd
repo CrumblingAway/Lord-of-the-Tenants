@@ -1,4 +1,4 @@
-class_name FloorLevel extends Node2D
+class_name BuildingFloor extends Node2D
 
 enum Layer
 {
@@ -29,11 +29,11 @@ var _highlighted_apartment : Apartment
 
 var _reserved_tiles : Array
 
-var _floor_below : FloorLevel
+var _floor_below : BuildingFloor
 
-########## FloorLevel methods. ##########
+########## BuildingFloor methods. ##########
 
-func init(height: int, width: int) -> FloorLevel:
+func init(height: int, width: int) -> BuildingFloor:
 	for x in range(width):
 		for y in range(height):
 			_tilemap.set_cell(0, Vector2i(x, y), 0, Vector2i.ZERO)
