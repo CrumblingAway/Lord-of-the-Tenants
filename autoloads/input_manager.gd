@@ -8,12 +8,14 @@ enum Mode
 	LEVEL_IDLE,
 	LEVEL_PLACING_TENANT,
 	LEVEL_SELECTING_TILES,
+	LEVEL_MENU,
 	COUNT,
 }
 var _mode : Mode = Mode.COUNT:
 	set(mode):
 		_mode = mode
 		Utils.printdbg("Input mode: %s" % mode_to_string(_mode))
+var _previous_mode : Mode = Mode.COUNT
 func mode_to_string(mode: Mode) -> String:
 	match mode:
 		Mode.MENU:
@@ -24,6 +26,8 @@ func mode_to_string(mode: Mode) -> String:
 			return "LEVEL_PLACING_TENANT"
 		Mode.LEVEL_SELECTING_TILES:
 			return "LEVEL_SELECTING_TILES"
+		Mode.LEVEL_MENU:
+			return "LEVEL_MENU"
 		_:
 			pass
 	
@@ -50,15 +54,21 @@ func _process_level_input() -> bool:
 				_building_floor.remove_apartment_at_global_position(mouse_position)
 			elif Input.is_action_just_pressed("middle_click"):
 				_mode = Mode.LEVEL_SELECTING_TILES
+			elif Input.is_action_just_pressed("escape"):
+				_previous_mode = _mode
+				_mode = Mode.LEVEL_MENU
 		Mode.LEVEL_PLACING_TENANT:
 			if Input.is_action_just_pressed("left_click"):
 				# TODO: Place tenant.
 				
 				_building_floor.unhighlight_adjacent_apartments_to_hovered()
 				_mode = Mode.LEVEL_IDLE
-			if Input.is_action_just_pressed("right_click"):
+			elif Input.is_action_just_pressed("right_click"):
 				# TODO: Remove tenant.
 				pass
+			elif Input.is_action_just_pressed("escape"):
+				_previous_mode = _mode
+				_mode = Mode.LEVEL_MENU
 		Mode.LEVEL_SELECTING_TILES:
 			_building_floor.highlight_reserved_tiles()
 			# Reserve/Unreserve tiles.
@@ -73,6 +83,13 @@ func _process_level_input() -> bool:
 			elif Input.is_action_just_pressed("middle_click"):
 				_building_floor.unreserve_all_tiles()
 				_mode = Mode.LEVEL_IDLE
+			elif Input.is_action_just_pressed("escape"):
+				_previous_mode = _mode
+				_mode = Mode.LEVEL_MENU
+		Mode.LEVEL_MENU:
+			if Input.is_action_just_pressed("escape"):
+				_mode = _previous_mode
+				_previous_mode = Mode.LEVEL_MENU
 		_:
 			pass
 	
@@ -92,6 +109,8 @@ func _process(_delta: float) -> void:
 		Mode.LEVEL_PLACING_TENANT:
 			_process_level_input()
 		Mode.LEVEL_SELECTING_TILES:
+			_process_level_input()
+		Mode.LEVEL_MENU:
 			_process_level_input()
 		_:
 			pass

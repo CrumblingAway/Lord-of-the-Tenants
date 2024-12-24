@@ -8,11 +8,11 @@ var money : int:
 	set(new_money):
 		money = new_money
 
-var tenants : Array:
+var selected_tenant : Tenant:
 	get:
-		return tenants
-	set(new_tenants):
-		tenants = new_tenants
+		return selected_tenant
+	set(new_selected_tenant):
+		selected_tenant = new_selected_tenant
 
 ########## Player methods. ##########
 
