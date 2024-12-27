@@ -6,7 +6,10 @@ var current_state : State:
 	get:
 		return current_state
 	set(new_current_state):
+		if current_state:
+			remove_child(current_state)
 		current_state = new_current_state
+		add_child(current_state)
 
 ########## InputManager methods. ##########
 

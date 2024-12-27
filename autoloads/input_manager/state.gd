@@ -1,4 +1,4 @@
-class_name State extends RefCounted
+class_name State extends Node
 
 ########## Signals. ##########
 
@@ -14,4 +14,3 @@ func exit() -> void:
 
 func process() -> void:
 	pass
-
