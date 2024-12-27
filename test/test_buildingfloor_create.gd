@@ -5,9 +5,6 @@ var building_floor : BuildingFloor
 ########## Test methods. ##########
 
 func run() -> void:
-	InputManager._mode = InputManager.Mode.LEVEL_IDLE
-	InputManager._building_floor = building_floor
-	
 	building_floor.init(5, 5)
 
 func get_test_name() -> String:

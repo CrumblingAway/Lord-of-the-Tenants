@@ -5,9 +5,6 @@ var building_floor : BuildingFloor
 ########## Test methods. ##########
 
 func run() -> void:
-	InputManager._mode = InputManager.Mode.LEVEL_IDLE
-	InputManager._building_floor = building_floor
-	
 	building_floor.init(10, 10)
 	
 	var apartments_tiles : Array = [
