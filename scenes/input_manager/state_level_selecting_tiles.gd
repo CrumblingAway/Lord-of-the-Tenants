@@ -24,10 +24,14 @@ func exit() -> void:
 func process() -> void:
 	var mouse_position : Vector2 = get_viewport().get_mouse_position()
 	
-	_building_floor.highlight_apartment_at_global_position(mouse_position)
+	_building_floor.highlight_reserved_tiles()
 	if Input.is_action_just_pressed("left_click"):
-		pass
+		if _building_floor.is_tile_at_global_position_available(mouse_position):
+			_building_floor.reserve_tile_at_global_position(mouse_position)
+		elif _building_floor.is_tile_at_global_position_reserved(mouse_position):
+			_building_floor.unreserve_tile_at_global_position(mouse_position)
 	elif Input.is_action_just_pressed("right_click"):
-		pass
+		_building_floor.register_reserved_tiles_as_apartment()
 	elif Input.is_action_just_pressed("middle_click"):
+		_building_floor.unreserve_all_tiles()
 		transition_to.emit("state_level_idle")

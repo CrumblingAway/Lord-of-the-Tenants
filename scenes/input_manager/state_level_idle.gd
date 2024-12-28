@@ -28,6 +28,6 @@ func process() -> void:
 	if Input.is_action_just_pressed("left_click"):
 		pass
 	elif Input.is_action_just_pressed("right_click"):
-		pass
+		_building_floor.remove_apartment_at_global_position(mouse_position)
 	elif Input.is_action_just_pressed("middle_click"):
 		transition_to.emit("state_level_selecting_tiles")
