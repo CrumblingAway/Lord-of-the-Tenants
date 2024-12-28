@@ -90,20 +90,15 @@ func run() -> void:
 		Tenant.new().init(1, 1),
 	]
 	
-	_print_apartment_placement(building_floor.place_tenant_in_apartment(tenants[0], building_floor.get_apartment_at_tile_position(apartments_tiles[3][0])))
-	_print_apartment_placement(building_floor.place_tenant_in_apartment(tenants[1], building_floor.get_apartment_at_tile_position(apartments_tiles[3][0])))
-	_print_apartment_placement(building_floor.place_tenant_in_apartment(tenants[1], building_floor.get_apartment_at_tile_position(apartments_tiles[7][0])))
-	_print_apartment_placement(building_floor.place_tenant_in_apartment(tenants[2], building_floor.get_apartment_at_tile_position(apartments_tiles[6][0])))
-	_print_apartment_placement(building_floor.place_tenant_in_apartment(tenants[3], building_floor.get_apartment_at_tile_position(apartments_tiles[2][0])))
-	_print_apartment_placement(building_floor.place_tenant_in_apartment(tenants[4], building_floor.get_apartment_at_tile_position(apartments_tiles[2][0])))
+	expect(building_floor.place_tenant_in_apartment(tenants[0], building_floor.get_apartment_at_tile_position(apartments_tiles[3][0])), true)
+	expect(building_floor.place_tenant_in_apartment(tenants[1], building_floor.get_apartment_at_tile_position(apartments_tiles[3][0])), false)
+	expect(building_floor.place_tenant_in_apartment(tenants[1], building_floor.get_apartment_at_tile_position(apartments_tiles[7][0])), true)
+	expect(building_floor.place_tenant_in_apartment(tenants[2], building_floor.get_apartment_at_tile_position(apartments_tiles[6][0])), true)
+	expect(building_floor.place_tenant_in_apartment(tenants[3], building_floor.get_apartment_at_tile_position(apartments_tiles[2][0])), false)
+	expect(building_floor.place_tenant_in_apartment(tenants[4], building_floor.get_apartment_at_tile_position(apartments_tiles[2][0])), false)
 
 func get_test_name() -> String:
 	return "Place Tenant"
-
-########## TestTenantPlacement methods. ##########
-
-func _print_apartment_placement(success: bool):
-	print("success" if success else "failure")
 
 ########## Node methods. ##########
 

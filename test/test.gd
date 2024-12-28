@@ -12,6 +12,12 @@ func run() -> void:
 func get_test_name() -> String:
 	return ""
 
+func expect(expression: Variant, expectation: Variant) -> void:
+	if expression != expectation:
+		print("Failure: " + str(expression) + " != " + str(expectation))
+	else:
+		print("Success: " + str(expression) + " == " + str(expectation))
+
 ########## Node methods. ##########
 
 func _ready() -> void:
