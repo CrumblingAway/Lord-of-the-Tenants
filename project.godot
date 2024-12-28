@@ -15,9 +15,6 @@ run/main_scene="res://test/test_main_scene.tscn"
 config/features=PackedStringArray("4.1", "Mobile")
 config/icon="res://icon.svg"
 
-[autoload]
-
-Player="*res://autoloads/player.gd"
 [input]
 
 left_click={
