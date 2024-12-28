@@ -1,0 +1,12 @@
+[gd_scene load_steps=4 format=3 uid="uid://bvlbnhi3xdsa7"]
+
+[ext_resource type="Script" path="res://scenes/input_manager/level_input_manager.gd" id="1_pdd0t"]
+[ext_resource type="PackedScene" uid="uid://cxosn5idm1rca" path="res://scenes/input_manager/state_level_idle.tscn" id="2_r0e3w"]
+[ext_resource type="PackedScene" uid="uid://qq10cebpr2tn" path="res://scenes/input_manager/state_level_selecting_tiles.tscn" id="3_pcui3"]
+
+[node name="level_input_manager" type="Node"]
+script = ExtResource("1_pdd0t")
+
+[node name="state_level_idle" parent="." instance=ExtResource("2_r0e3w")]
+
+[node name="state_level_selecting_tiles" parent="." instance=ExtResource("3_pcui3")]

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cxosn5idm1rca"]
+
+[ext_resource type="Script" path="res://scenes/input_manager/state_level_idle.gd" id="1_gaxy2"]
+
+[node name="state_level_idle" type="Node"]
+script = ExtResource("1_gaxy2")

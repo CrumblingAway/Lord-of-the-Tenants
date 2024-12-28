@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://qq10cebpr2tn"]
+
+[ext_resource type="Script" path="res://scenes/input_manager/state_level_selecting_tiles.gd" id="1_0cewg"]
+
+[node name="state_level_selecting_tiles" type="Node"]
+script = ExtResource("1_0cewg")
