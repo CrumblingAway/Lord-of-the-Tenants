@@ -29,6 +29,8 @@ func init(building_floor: BuildingFloor) -> void:
 				state.init(building_floor)
 			"state_level_selecting_tiles":
 				state.init(building_floor)
+			"state_level_placing_tenant":
+				state.init(building_floor)
 			_:
 				pass
 		state.transition_to.connect(transition_to_state)

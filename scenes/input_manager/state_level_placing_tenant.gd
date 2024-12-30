@@ -1,4 +1,4 @@
-class_name StateLevelIdle extends State
+class_name StateLevelPlacingTenant extends State
 
 var _building_floor : BuildingFloor:
 	get:
@@ -6,9 +6,9 @@ var _building_floor : BuildingFloor:
 	set(new_building_floor):
 		_building_floor = new_building_floor
 
-########## StateLevelIdle methods. ##########
+########## StateLevelPlacingTenant methods. ##########
 
-func init(other_building_floor: BuildingFloor) -> StateLevelIdle:
+func init(other_building_floor: BuildingFloor) -> StateLevelPlacingTenant:
 	_building_floor = other_building_floor
 	
 	return self
@@ -24,12 +24,10 @@ func exit() -> void:
 func process() -> void:
 	var mouse_position : Vector2 = get_viewport().get_mouse_position()
 	
-	_building_floor.highlight_apartment_at_global_position(mouse_position)
+	_building_floor.highlight_reserved_tiles()
 	if Input.is_action_just_pressed("left_click"):
-		if _building_floor.get_apartment_at_global_position(mouse_position):
-			_building_floor.highlight_adjacent_apartments_to_hovered()
-			transition_to.emit("state_level_placing_tenant")
+		pass
 	elif Input.is_action_just_pressed("right_click"):
-		_building_floor.remove_apartment_at_global_position(mouse_position)
+		pass
 	elif Input.is_action_just_pressed("middle_click"):
-		transition_to.emit("state_level_selecting_tiles")
+		pass
