@@ -9,10 +9,6 @@ var current_state : State:
 	get:
 		return current_state
 	set(new_current_state):
-#		if current_state:
-#			remove_child(current_state)
-#		current_state = new_current_state
-#		add_child(current_state)
 		current_state = new_current_state
 var previous_state : State:
 	get:
@@ -22,15 +18,15 @@ var previous_state : State:
 
 ########## InputManager methods. ##########
 
-func init(building_floor: BuildingFloor) -> void:
+func init(level: Level) -> void:
 	for state in states:
 		match state.name:
 			"state_level_idle":
-				state.init(building_floor)
+				state.init(level)
 			"state_level_selecting_tiles":
-				state.init(building_floor)
+				state.init(level)
 			"state_level_placing_tenant":
-				state.init(building_floor)
+				state.init(level)
 			_:
 				pass
 		state.transition_to.connect(transition_to_state)

@@ -8,8 +8,8 @@ var _building_floor : BuildingFloor:
 
 ########## StateLevelPlacingTenant methods. ##########
 
-func init(other_building_floor: BuildingFloor) -> StateLevelPlacingTenant:
-	_building_floor = other_building_floor
+func init(level: Level) -> StateLevelPlacingTenant:
+	_building_floor = level.building_floor
 	
 	return self
 
