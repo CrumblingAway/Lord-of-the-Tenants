@@ -1,10 +1,18 @@
 class_name StateLevelPlacingTenant extends State
 
+########## Fields. ##########
+
 var _building_floor : BuildingFloor:
 	get:
 		return _building_floor
 	set(new_building_floor):
 		_building_floor = new_building_floor
+var _player : Player:
+	get:
+		return _player
+	set(new_player):
+		_player = new_player
+var _tenants : Array
 
 ########## StateLevelPlacingTenant methods. ##########
 
@@ -13,10 +21,16 @@ func init(other_building_floor: BuildingFloor) -> StateLevelPlacingTenant:
 	
 	return self
 
+func enable_tenant_buttons() -> void:
+	pass
+
+func _on_tenant_selected(tenant_idx: int) -> void:
+	pass
+
 ########## State methods. ##########
 
 func enter() -> void:
-	pass
+	enable_tenant_buttons()
 
 func exit() -> void:
 	pass

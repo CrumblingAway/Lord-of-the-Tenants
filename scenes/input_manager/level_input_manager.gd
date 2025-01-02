@@ -22,7 +22,7 @@ var previous_state : State:
 
 ########## InputManager methods. ##########
 
-func init(building_floor: BuildingFloor) -> void:
+func init(building_floor: BuildingFloor, player: Player) -> void:
 	for state in states:
 		match state.name:
 			"state_level_idle":

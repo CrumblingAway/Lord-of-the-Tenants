@@ -4,6 +4,7 @@ class_name Level extends Node
 
 @onready var input_manager : LevelInputManager = $level_input_manager
 @onready var building_floor : BuildingFloor = $building_floor
+@onready var player : Player = $player
 
 ########## Level methods. ##########
 
@@ -12,7 +13,7 @@ func init(
 	floor_width: int
 ) -> Level:
 	building_floor.init(floor_height, floor_width)
-	input_manager.init(building_floor)
+	input_manager.init(building_floor, player)
 	
 	return self
 

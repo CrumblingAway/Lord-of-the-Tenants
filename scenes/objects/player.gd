@@ -1,4 +1,4 @@
-extends Node
+class_name Player extends Node
 
 ########## Fields. ##########
 
@@ -8,11 +8,7 @@ var money : int:
 	set(new_money):
 		money = new_money
 
-var selected_tenant : Tenant:
-	get:
-		return selected_tenant
-	set(new_selected_tenant):
-		selected_tenant = new_selected_tenant
+var tenants : Array
 
 ########## Player methods. ##########
 
