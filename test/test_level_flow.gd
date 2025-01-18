@@ -6,6 +6,7 @@ class_name TestLevelFlow extends Test
 
 func run() -> void:
 	level.init(10, 10)
+	level.advance_floor()
 
 func get_test_name() -> String:
 	return "LevelFlow"
