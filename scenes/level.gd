@@ -31,7 +31,14 @@ func advance_floor() -> void:
 	building_floors.push_back(new_building_floor)
 	new_building_floor.init(_floor_height, _floor_width)
 	input_manager.init(new_building_floor, player)
-	
+	player.tenants = create_tenants_for_floor()
+
+func create_tenants_for_floor() -> Array:
+	var num_tenants : int = int(sqrt(_floor_height * _floor_width))
+	var tenants : Array = []
+	tenants.resize(num_tenants)
+	tenants.fill(Tenant.new().init(num_tenants, 1))
+	return tenants
 
 ########## Node methods. ##########
 
