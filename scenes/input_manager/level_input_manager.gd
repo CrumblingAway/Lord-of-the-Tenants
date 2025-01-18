@@ -30,7 +30,7 @@ func init(building_floor: BuildingFloor, player: Player) -> void:
 			"state_level_selecting_tiles":
 				state.init(building_floor)
 			"state_level_placing_tenant":
-				state.init(building_floor)
+				state.init(building_floor, player)
 			_:
 				pass
 		state.transition_to.connect(transition_to_state)

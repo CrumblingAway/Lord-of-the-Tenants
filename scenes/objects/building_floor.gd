@@ -39,6 +39,9 @@ func init(height: int, width: int) -> BuildingFloor:
 			_tilemap.set_cell(0, Vector2i(x, y), 0, Vector2i.ZERO)
 	return self
 
+func get_highlighted_apartment() -> Apartment:
+	return _highlighted_apartment
+
 func get_apartment_at_global_position(glb_position: Vector2) -> Apartment:
 	return get_apartment_at_tile_position(_tilemap.local_to_map(glb_position))
 

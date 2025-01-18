@@ -16,21 +16,24 @@ var _tenants : Array
 
 ########## StateLevelPlacingTenant methods. ##########
 
-func init(other_building_floor: BuildingFloor) -> StateLevelPlacingTenant:
+func init(other_building_floor: BuildingFloor, other_player: Player) -> StateLevelPlacingTenant:
 	_building_floor = other_building_floor
+	_player = other_player
 	
 	return self
 
-func enable_tenant_buttons() -> void:
-	pass
-
-func _on_tenant_selected(tenant_idx: int) -> void:
-	pass
+func _on_tenant_selected(tenant: Tenant) -> void:
+	if _building_floor.place_tenant_in_apartment(tenant, _building_floor.get_highlighted_apartment()):
+		Utils.printdbg("Tenant %s placed successfully.", func(): return [tenant])
+		# TODO: Remove tenant from tenants.
+		pass
+	else:
+		Utils.printdbg("Failed to place tenant %s.", func(): return [tenant])
 
 ########## State methods. ##########
 
 func enter() -> void:
-	enable_tenant_buttons()
+	_tenants = _player.tenants
 
 func exit() -> void:
 	pass
