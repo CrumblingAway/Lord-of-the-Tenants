@@ -22,12 +22,15 @@ func init(
 
 func advance_floor() -> void:
 	assert(is_node_ready())
-	if building_floors.size() > 0:
-		pass
-	else:
-		building_floors.push_back($building_floor)
-		building_floors[0].init(_floor_height, _floor_width)
-		input_manager.init(building_floors[0], player)
+	if building_floors.size() > 1:
+		remove_child(building_floors[-3])
+	
+	var new_building_floor : BuildingFloor = preload("res://scenes/objects/building_floor.tscn").instantiate()
+	add_child(new_building_floor)
+	
+	building_floors.push_back(new_building_floor)
+	new_building_floor.init(_floor_height, _floor_width)
+	input_manager.init(new_building_floor, player)
 	
 
 ########## Node methods. ##########
