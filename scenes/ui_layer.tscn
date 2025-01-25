@@ -2,5 +2,9 @@
 
 [ext_resource type="Script" path="res://scenes/ui_layer.gd" id="1_jgijp"]
 
-[node name="ui_layer" type="Node"]
+[node name="ui_layer" type="CanvasLayer"]
 script = ExtResource("1_jgijp")
+
+[node name="tenant_buttons" type="VBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0

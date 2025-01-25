@@ -32,14 +32,21 @@ func advance_floor() -> void:
 	building_floors.push_back(new_building_floor)
 	new_building_floor.init(_floor_height, _floor_width)
 	input_manager.init(self)
-	player.tenants = create_tenants_for_floor()
+	player.tenants = _create_tenants_for_floor()
+	_init_tenant_buttons(player.tenants)
 
-func create_tenants_for_floor() -> Array:
+func _create_tenants_for_floor() -> Array:
 	var num_tenants : int = int(sqrt(_floor_height * _floor_width))
 	var tenants : Array = []
 	tenants.resize(num_tenants)
 	tenants.fill(Tenant.new().init(num_tenants, 1))
 	return tenants
+
+func _init_tenant_buttons(tenants: Array) -> void:
+	for tenant in tenants:
+		var tenant_button : UILayer.TenantButton = UILayer.TenantButton.new().init(tenant)
+		tenant_button.text = "NT: %d, NO: %d" % [tenant.noise_tolerance, tenant.noise_output]
+		ui_layer.tenant_buttons.add_child(tenant_button)
 
 ########## Node methods. ##########
 

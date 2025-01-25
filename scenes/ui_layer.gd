@@ -1,11 +1,13 @@
-class_name UILayer extends Node
+class_name UILayer extends CanvasLayer
 
+@onready var tenant_buttons : VBoxContainer = $tenant_buttons
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+func _ready() -> void:
+	tenant_buttons.global_position = Vector2i(100, 100)
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+class TenantButton extends Button:
+	var tenant: Tenant
+	
+	func init(other_tenant: Tenant) -> TenantButton:
+		tenant = other_tenant
+		return self

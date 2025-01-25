@@ -13,12 +13,15 @@ var _player : Player:
 	set(new_player):
 		_player = new_player
 var _tenants : Array
+var _tenant_buttons : VBoxContainer
 
 ########## StateLevelPlacingTenant methods. ##########
 
 func init(level: Level) -> StateLevelPlacingTenant:
 	_building_floor = level.building_floors[-1]
 	_player = level.player
+	_tenants = _player.tenants
+	_tenant_buttons = level.ui_layer.tenant_buttons
 	
 	return self
 
@@ -30,18 +33,19 @@ func _on_tenant_selected(tenant: Tenant) -> void:
 	else:
 		Utils.printdbg("Failed to place tenant %s.", func(): return [tenant])
 
-func _init_tenant_buttons(tenants: Array) -> void:
-	var tenant_button : Button = Button.new()
-	tenant_button.button_down.connect(_on_tenant_selected.bind(tenants[0]))
-	tenant_button.global_position = Vector2i(100, 100)
-	tenant_button.text = "NT: %d, NO: %d" % [tenants[0].noise_tolerance, tenants[0].noise_output]
-	get_tree().root.add_child(tenant_button)
+func _init_tenant_buttons(tenant_buttons: VBoxContainer, tenants: Array) -> void:
+	
+	for tenant_button in tenant_buttons.get_children():
+		tenant_button = tenant_button as Button
+		tenant_button.button_down.connect(_on_tenant_selected.bind(tenants[0]))
+		tenant_button.global_position = Vector2i(100, 100)
+		tenant_button.text = "NT: %d, NO: %d" % [tenants[0].noise_tolerance, tenants[0].noise_output]
+		get_tree().root.add_child(tenant_button)
 
 ########## State methods. ##########
 
 func enter() -> void:
-	_tenants = _player.tenants
-	_init_tenant_buttons(_tenants)
+	pass
 
 func exit() -> void:
 	pass
