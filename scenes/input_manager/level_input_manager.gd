@@ -22,15 +22,15 @@ var previous_state : State:
 
 ########## InputManager methods. ##########
 
-func init(building_floor: BuildingFloor, player: Player) -> void:
+func init(level: Level) -> void:
 	for state in states:
 		match state.name:
 			"state_level_idle":
-				state.init(building_floor)
+				state.init(level)
 			"state_level_selecting_tiles":
-				state.init(building_floor)
+				state.init(level)
 			"state_level_placing_tenant":
-				state.init(building_floor, player)
+				state.init(level)
 			_:
 				pass
 		state.transition_to.connect(transition_to_state)

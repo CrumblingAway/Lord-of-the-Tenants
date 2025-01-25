@@ -30,7 +30,7 @@ func advance_floor() -> void:
 	
 	building_floors.push_back(new_building_floor)
 	new_building_floor.init(_floor_height, _floor_width)
-	input_manager.init(new_building_floor, player)
+	input_manager.init(self)
 	player.tenants = create_tenants_for_floor()
 
 func create_tenants_for_floor() -> Array:

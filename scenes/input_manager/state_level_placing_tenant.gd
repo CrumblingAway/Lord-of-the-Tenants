@@ -16,9 +16,9 @@ var _tenants : Array
 
 ########## StateLevelPlacingTenant methods. ##########
 
-func init(other_building_floor: BuildingFloor, other_player: Player) -> StateLevelPlacingTenant:
-	_building_floor = other_building_floor
-	_player = other_player
+func init(level: Level) -> StateLevelPlacingTenant:
+	_building_floor = level.building_floors[-1]
+	_player = level.player
 	
 	return self
 

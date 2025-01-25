@@ -8,8 +8,8 @@ var _building_floor : BuildingFloor:
 
 ########## StateLevelIdle methods. ##########
 
-func init(other_building_floor: BuildingFloor) -> StateLevelSelectingTiles:
-	_building_floor = other_building_floor
+func init(level: Level) -> StateLevelSelectingTiles:
+	_building_floor = level.building_floors[-1]
 	
 	return self
 
