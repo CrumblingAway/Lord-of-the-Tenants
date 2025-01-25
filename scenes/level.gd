@@ -5,6 +5,7 @@ class_name Level extends Node
 @onready var input_manager : LevelInputManager = $level_input_manager
 @onready var building_floors : Array = []
 @onready var player : Player = $player
+@onready var ui_layer : UILayer = $ui_layer
 
 var _floor_height: int
 var _floor_width: int
