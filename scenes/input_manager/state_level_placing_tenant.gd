@@ -33,22 +33,17 @@ func _on_tenant_selected(tenant: Tenant) -> void:
 	else:
 		Utils.printdbg("Failed to place tenant %s.", func(): return [tenant])
 
-func _init_tenant_buttons(tenant_buttons: VBoxContainer, tenants: Array) -> void:
-	
-	for tenant_button in tenant_buttons.get_children():
-		tenant_button = tenant_button as Button
-		tenant_button.button_down.connect(_on_tenant_selected.bind(tenants[0]))
-		tenant_button.global_position = Vector2i(100, 100)
-		tenant_button.text = "NT: %d, NO: %d" % [tenants[0].noise_tolerance, tenants[0].noise_output]
-		get_tree().root.add_child(tenant_button)
-
 ########## State methods. ##########
 
 func enter() -> void:
-	pass
+	for tenant_button in _tenant_buttons.get_children():
+		tenant_button = tenant_button as UILayer.TenantButton
+		tenant_button.pressed.connect(_on_tenant_selected.bind(tenant_button.tenant))
 
 func exit() -> void:
-	pass
+	for tenant_button in _tenant_buttons.get_children():
+		tenant_button = tenant_button as UILayer.TenantButton
+		tenant_button.pressed.disconnect(_on_tenant_selected)
 
 func process() -> void:
 	var mouse_position : Vector2 = get_viewport().get_mouse_position()
