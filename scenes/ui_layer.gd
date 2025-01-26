@@ -3,7 +3,7 @@ class_name UILayer extends CanvasLayer
 @onready var tenant_buttons : VBoxContainer = $tenant_buttons
 
 func _ready() -> void:
-	tenant_buttons.global_position = Vector2i(100, 100)
+	pass
 
 class TenantButton extends Button:
 	var tenant: Tenant
