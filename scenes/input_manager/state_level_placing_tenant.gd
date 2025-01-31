@@ -28,8 +28,9 @@ func init(level: Level) -> StateLevelPlacingTenant:
 func _on_tenant_selected(tenant_button: UILayer.TenantButton) -> void:
 	if _building_floor.place_tenant_in_apartment(tenant_button.tenant, _building_floor.get_highlighted_apartment()):
 		Utils.printdbg("Tenant %s placed successfully.", func(): return [tenant_button.tenant])
-		# TODO: Remove tenant from tenants.
-		pass
+		for child in _tenant_buttons.get_children():
+			if child == tenant_button:
+				_tenant_buttons.remove_child(child)
 	else:
 		Utils.printdbg("Failed to place tenant %s.", func(): return [tenant_button.tenant])
 
@@ -46,8 +47,6 @@ func exit() -> void:
 		tenant_button.pressed.disconnect(_on_tenant_selected)
 
 func process() -> void:
-	var mouse_position : Vector2 = get_viewport().get_mouse_position()
-	
 	_building_floor.highlight_reserved_tiles()
 	if Input.is_action_just_pressed("left_click"):
 		pass
