@@ -17,7 +17,7 @@ enum ApartmentLayer
 
 ########## Signals. ##########
 
-signal tenant_apartment_mismatch(reasons: Array[String])
+signal tenant_apartment_mismatch(reasons: Array)
 signal tenant_placed_successfully
 
 ########## Fields. ##########
@@ -108,7 +108,9 @@ func clear_highlight() -> void:
 	_tilemap.clear_layer(Layer.HIGHLIGHT)
 
 func place_tenant_in_apartment(tenant: Tenant, apartment: Apartment) -> bool:
-	if not _is_apartment_fit_for_tenant(apartment, tenant):
+	var apartment_problems : Array = _evaluate_apartment_for_tenant(apartment, tenant)
+	if apartment_problems.size() > 0:
+		tenant_apartment_mismatch.emit(apartment_problems)
 		return false
 	
 	apartment.tenant = tenant
@@ -188,9 +190,15 @@ func _get_apartments_below(apartment: Apartment) -> Array:
 		apartments_below.push_back(_floor_below._get_apartment_at_tile_position(tile))
 	return apartments_below
 
-func _is_apartment_fit_for_tenant(apartment: Apartment, tenant: Tenant) -> bool:
-	return apartment.tenant == null \
-		   and _get_noise_input_in_apartment(apartment) <= tenant.noise_tolerance
+## Returns an array of Strings wherein each entry describes a reason why the tenant does not want
+## the apartment. An empty array implies the tenant has no problems with the apartment.
+func _evaluate_apartment_for_tenant(apartment: Apartment, tenant: Tenant) -> Array:
+	var problems : Array = []
+	if apartment.tenant != null:
+		problems.push_back("The apartment is already occupied.")
+	if _get_noise_input_in_apartment(apartment) > tenant.noise_tolerance:
+		problems.push_back("The apartment is too loud for the tenant.")
+	return problems
 
 func _highlight_adjacent_apartments(apartment: Apartment) -> void:
 	var adjacent_apartments : Array = _get_adjacent_apartments(apartment)
