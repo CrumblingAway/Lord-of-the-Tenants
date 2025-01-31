@@ -25,20 +25,20 @@ func init(level: Level) -> StateLevelPlacingTenant:
 	
 	return self
 
-func _on_tenant_selected(tenant: Tenant) -> void:
-	if _building_floor.place_tenant_in_apartment(tenant, _building_floor.get_highlighted_apartment()):
-		Utils.printdbg("Tenant %s placed successfully.", func(): return [tenant])
+func _on_tenant_selected(tenant_button: UILayer.TenantButton) -> void:
+	if _building_floor.place_tenant_in_apartment(tenant_button.tenant, _building_floor.get_highlighted_apartment()):
+		Utils.printdbg("Tenant %s placed successfully.", func(): return [tenant_button.tenant])
 		# TODO: Remove tenant from tenants.
 		pass
 	else:
-		Utils.printdbg("Failed to place tenant %s.", func(): return [tenant])
+		Utils.printdbg("Failed to place tenant %s.", func(): return [tenant_button.tenant])
 
 ########## State methods. ##########
 
 func enter() -> void:
 	for tenant_button in _tenant_buttons.get_children():
 		tenant_button = tenant_button as UILayer.TenantButton
-		tenant_button.pressed.connect(_on_tenant_selected.bind(tenant_button.tenant))
+		tenant_button.pressed.connect(_on_tenant_selected.bind(tenant_button))
 
 func exit() -> void:
 	for tenant_button in _tenant_buttons.get_children():
