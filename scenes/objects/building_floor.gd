@@ -151,7 +151,7 @@ func remove_apartment_at_global_position(glb_position: Vector2) -> void:
 func _get_noise_input_in_apartment(apartment: Apartment) -> int:
 	var noise_input : int = 0
 	
-	var adjacent_apartments : Array = _get_adjacent_apartments(apartment)
+	var adjacent_apartments : Array = get_adjacent_apartments(apartment)
 	for adjacent_apartment in adjacent_apartments:
 		noise_input += _get_noise_output_from_apartment(adjacent_apartment)
 	var below_apartments : Array = _get_apartments_below(apartment)
@@ -163,7 +163,7 @@ func _get_noise_input_in_apartment(apartment: Apartment) -> int:
 func _get_noise_output_from_apartment(apartment: Apartment) -> int:
 	return apartment.get_noise_output()
 
-func _get_adjacent_apartments(apartment: Apartment) -> Array:
+func get_adjacent_apartments(apartment: Apartment) -> Array:
 	var adjacent_apartments : Array = []
 	
 	var four_connectivity : Array = [
@@ -200,10 +200,10 @@ func _evaluate_apartment_for_tenant(apartment: Apartment, tenant: Tenant) -> Arr
 		problems.push_back("The apartment is too loud for the tenant.")
 	
 	# TODO: Optimize. Accumulate noise levels when placing tenants.
-	var adjacent_apartments : Array = _get_adjacent_apartments(apartment)
+	var adjacent_apartments : Array = get_adjacent_apartments(apartment)
 	for adjacent_apartment in adjacent_apartments:
 		var noise_input : int = tenant.noise_output
-		var next_adjacent_apartments : Array = _get_adjacent_apartments(adjacent_apartment)
+		var next_adjacent_apartments : Array = get_adjacent_apartments(adjacent_apartment)
 		
 		var exceeds_adjacent_apartment_tolerance : bool = false
 		for next_adjacent_apartment in next_adjacent_apartments:
@@ -218,7 +218,7 @@ func _evaluate_apartment_for_tenant(apartment: Apartment, tenant: Tenant) -> Arr
 	return problems
 
 func _highlight_adjacent_apartments(apartment: Apartment) -> void:
-	var adjacent_apartments : Array = _get_adjacent_apartments(apartment)
+	var adjacent_apartments : Array = get_adjacent_apartments(apartment)
 	for adjacent_apartment in adjacent_apartments:
 		_tilemap.set_cells_terrain_connect(
 			_get_apartment_floor_layer(adjacent_apartment, ApartmentLayer.HIGHLIGHT),
@@ -240,7 +240,7 @@ func _highlight_adjacent_apartments(apartment: Apartment) -> void:
 	)
 
 func _unhighlight_adjacent_apartments(apartment: Apartment) -> void:
-	var adjacent_apartments : Array = _get_adjacent_apartments(apartment)
+	var adjacent_apartments : Array = get_adjacent_apartments(apartment)
 	for adjacent_apartment in adjacent_apartments:
 		_tilemap.clear_layer(_get_apartment_floor_layer(adjacent_apartment, ApartmentLayer.HIGHLIGHT))
 
