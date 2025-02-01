@@ -198,6 +198,23 @@ func _evaluate_apartment_for_tenant(apartment: Apartment, tenant: Tenant) -> Arr
 		problems.push_back("The apartment is already occupied.")
 	if _get_noise_input_in_apartment(apartment) > tenant.noise_tolerance:
 		problems.push_back("The apartment is too loud for the tenant.")
+	
+	# TODO: Optimize. Accumulate noise levels when placing tenants.
+	var adjacent_apartments : Array = _get_adjacent_apartments(apartment)
+	for adjacent_apartment in adjacent_apartments:
+		var noise_input : int = tenant.noise_output
+		var next_adjacent_apartments : Array = _get_adjacent_apartments(adjacent_apartment)
+		
+		var exceeds_adjacent_apartment_tolerance : bool = false
+		for next_adjacent_apartment in next_adjacent_apartments:
+			noise_input += next_adjacent_apartment.get_noise_output()
+			if noise_input > adjacent_apartment.get_noise_tolerance():
+				problems.push_back("Adjacent apartment would exceed noise tolerance.")
+				exceeds_adjacent_apartment_tolerance = true
+				break
+		if exceeds_adjacent_apartment_tolerance:
+			break
+	
 	return problems
 
 func _highlight_adjacent_apartments(apartment: Apartment) -> void:
