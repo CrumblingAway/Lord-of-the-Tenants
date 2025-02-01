@@ -26,6 +26,9 @@ func init(other_tiles: Array) -> Apartment:
 func get_noise_output() -> int:
 	return 0 if not tenant else tenant.noise_output
 
+func get_noise_tolerance() -> int:
+	return tenant.noise_tolerance if tenant else Utils.INT_MAX
+
 func clear_tenant() -> void:
 	tenant = null
 

@@ -42,7 +42,10 @@ func _create_tenants_for_floor() -> Array:
 	var num_tenants : int = int(sqrt(_floor_height * _floor_width))
 	var tenants : Array = []
 	tenants.resize(num_tenants)
-	tenants.fill(Tenant.new().init(num_tenants, 1))
+	
+	for i in range(num_tenants):
+		tenants[i] = Tenant.new().init(Utils.randi_range(1, num_tenants), 1)
+	
 	return tenants
 
 func _init_tenant_buttons(tenants: Array) -> void:
