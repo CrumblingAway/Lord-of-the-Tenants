@@ -27,6 +27,21 @@ func process() -> void:
 	_building_floor.highlight_apartment_at_global_position(mouse_position)
 	if Input.is_action_just_pressed("left_click"):
 		if _building_floor.get_apartment_at_global_position(mouse_position):
+			Utils.printdbg(
+				"Output noise: %d, Input noise: %s",
+				func(): 
+					var apartment : Apartment = _building_floor.get_apartment_at_global_position(mouse_position)
+					var total_noise : int = 0
+					var noises : Array = []
+					for adjacent_apartment in _building_floor.get_adjacent_apartments(apartment):
+						total_noise += adjacent_apartment.get_noise_output()
+						noises.push_back(str(adjacent_apartment.get_noise_output()))
+					return [
+						apartment.get_noise_output(),
+						"%d/%d [%s]" % [total_noise, apartment.get_noise_tolerance(), noises.reduce(func(accum: String, noise: String): return accum + " " + noise)]
+					]
+			)
+			
 			_building_floor.highlight_adjacent_apartments_to_hovered()
 			transition_to.emit("state_level_placing_tenant")
 	elif Input.is_action_just_pressed("right_click"):

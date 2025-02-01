@@ -227,17 +227,6 @@ func _highlight_adjacent_apartments(apartment: Apartment) -> void:
 			2,
 			true
 		)
-	
-	Utils.printdbg(
-		"Output noise: %d, Input noise: %s",
-		func(): 
-			var total_noise : int = 0
-			var noises : Array = []
-			for adjacent_apartment in adjacent_apartments:
-				total_noise += adjacent_apartment.get_noise_output()
-				noises.push_back(str(adjacent_apartment.get_noise_output()))
-			return [apartment.get_noise_output(), "%d [%s]" % [total_noise, noises.reduce(func(accum: String, noise: String): return accum + " " + noise)]]
-	)
 
 func _unhighlight_adjacent_apartments(apartment: Apartment) -> void:
 	var adjacent_apartments : Array = get_adjacent_apartments(apartment)
