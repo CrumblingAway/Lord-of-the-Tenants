@@ -87,20 +87,20 @@ func unreserve_all_tiles() -> void:
 func highlight_apartment_at_global_position(glb_position: Vector2) -> void:
 	var apartment : Apartment = get_apartment_at_global_position(glb_position)
 	if not apartment:
-		clear_highlight()
+		_clear_highlight()
 		_highlighted_apartment = null
 		return
 	
 	if apartment == _highlighted_apartment:
 		return
 	else:
-		clear_highlight()
+		_clear_highlight()
 	
 	_tilemap.set_cells_terrain_connect(Layer.HIGHLIGHT, apartment.tiles, 0, 0, false)
 	_highlighted_apartment = apartment
 
 func highlight_reserved_tiles() -> void:
-	clear_highlight()
+	_clear_highlight()
 	for tile in _reserved_tiles:
 		_tilemap.set_cell(Layer.HIGHLIGHT, tile, 0, Vector2i(5, 3))
 
@@ -119,9 +119,6 @@ func unhighlight_adjacent_apartments_to_hovered() -> void:
 	var adjacent_apartments : Array = _get_adjacent_apartments(_highlighted_apartment)
 	for adjacent_apartment in adjacent_apartments:
 		_tilemap.clear_layer(_get_apartment_floor_layer(adjacent_apartment, ApartmentLayer.HIGHLIGHT))
-
-func clear_highlight() -> void:
-	_tilemap.clear_layer(Layer.HIGHLIGHT)
 
 func mark_apartment_occupied(apartment: Apartment) -> void:
 	var floor_layer : int = _get_apartment_floor_layer(apartment, ApartmentLayer.FLOOR)
@@ -247,6 +244,9 @@ func _get_apartment_floor_layer(apartment: Apartment, layer: ApartmentLayer) -> 
 	var apartment_idx : int = _apartments.find(apartment)
 	assert(apartment_idx != -1, "Apartment not found.")
 	return Layer.COUNT + ApartmentLayer.COUNT * apartment_idx + layer
+
+func _clear_highlight() -> void:
+	_tilemap.clear_layer(Layer.HIGHLIGHT)
 
 ########## Node2D methods. ##########
 
