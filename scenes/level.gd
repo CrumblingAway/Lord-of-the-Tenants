@@ -25,12 +25,12 @@ func advance_floor() -> void:
 	assert(is_node_ready())
 	
 	if building_floors.size() > 1:
-		remove_child(building_floors[-3])
+		remove_child(building_floors[-2])
 	
 	var new_building_floor : BuildingFloor = preload("res://scenes/objects/building_floor.tscn").instantiate()
 	add_child(new_building_floor)
 	
-	new_building_floor.init(_floor_height, _floor_width)
+	new_building_floor.init(_floor_height, _floor_width, building_floors[-1] if building_floors.size() > 0 else null)
 	building_floors.push_back(new_building_floor)
 	
 	player.tenants = _create_tenants_for_floor()

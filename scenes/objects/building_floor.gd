@@ -33,7 +33,13 @@ var _floor_below : BuildingFloor
 
 ########## BuildingFloor methods. ##########
 
-func init(height: int, width: int) -> BuildingFloor:
+func init(
+	height: int,
+	width: int,
+	floor_below: BuildingFloor = null
+) -> BuildingFloor:
+	_floor_below = floor_below
+	
 	for x in range(width):
 		for y in range(height):
 			_tilemap.set_cell(0, Vector2i(x, y), 0, Vector2i.ZERO)
@@ -192,7 +198,9 @@ func _get_apartments_below(apartment: Apartment) -> Array:
 	
 	var apartments_below : Array = []
 	for tile in apartment.tiles:
-		apartments_below.push_back(_floor_below._get_apartment_at_tile_position(tile))
+		var apartment_below : Apartment = _floor_below.get_apartment_at_tile_position(tile)
+		if apartment_below:
+			apartments_below.push_back(apartment_below)
 	return apartments_below
 
 ## Returns an array of Strings wherein each entry describes a reason why the tenant does not want

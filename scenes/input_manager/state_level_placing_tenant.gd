@@ -1,5 +1,9 @@
 class_name StateLevelPlacingTenant extends State
 
+########## Signals. ##########
+
+signal finished_placing_tenants
+
 ########## Fields. ##########
 
 var _building_floor : BuildingFloor:
@@ -41,6 +45,7 @@ func _on_tenant_selected(tenant_button: UILayer.TenantButton) -> void:
 
 func _on_finished_placing() -> void:
 	Utils.printdbg("Level completed!")
+	finished_placing_tenants.emit()
 
 ########## State methods. ##########
 
