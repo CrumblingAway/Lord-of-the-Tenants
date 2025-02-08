@@ -31,14 +31,10 @@ func process() -> void:
 				"Output noise: %d, Input noise: %s",
 				func(): 
 					var apartment : Apartment = _building_floor.get_apartment_at_global_position(mouse_position)
-					var total_noise : int = 0
-					var noises : Array = []
-					for adjacent_apartment in _building_floor.get_adjacent_apartments(apartment):
-						total_noise += adjacent_apartment.get_noise_output()
-						noises.push_back(str(adjacent_apartment.get_noise_output()))
+					var total_noise : int = _building_floor.get_noise_input_in_apartment(apartment)
 					return [
 						apartment.get_noise_output(),
-						"%d/%d [%s]" % [total_noise, apartment.get_noise_tolerance(), noises.reduce(func(accum: String, noise: String): return accum + " " + noise)]
+						"%d/%d" % [total_noise, apartment.get_noise_tolerance()]
 					]
 			)
 			
