@@ -29,6 +29,8 @@ func init(level: Level) -> StateLevelPlacingTenant:
 	_tenant_buttons = level.ui_layer.tenant_buttons
 	_done_button = level.ui_layer.done_button
 	
+	_done_button.pressed.connect(_on_finished_placing)
+	
 	return self
 
 func _on_tenant_selected(tenant_button: UILayer.TenantButton) -> void:
@@ -55,8 +57,6 @@ func enter() -> void:
 	for tenant_button in _tenant_buttons.get_children():
 		tenant_button = tenant_button as UILayer.TenantButton
 		tenant_button.pressed.connect(_on_tenant_selected.bind(tenant_button))
-	
-	_done_button.pressed.connect(_on_finished_placing)
 
 func exit() -> void:
 	for tenant_button in _tenant_buttons.get_children():
