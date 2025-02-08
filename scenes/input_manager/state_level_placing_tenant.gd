@@ -40,6 +40,7 @@ func _on_tenant_selected(tenant_button: UILayer.TenantButton) -> void:
 				_tenant_buttons.remove_child(child)
 		if _tenant_buttons.get_children().size() == 0:
 			_done_button.disabled = false
+		transition_to.emit("state_level_idle")
 	else:
 		Utils.printdbg("Failed to place tenant %s.", func(): return [tenant_button.tenant])
 
@@ -55,8 +56,6 @@ func enter() -> void:
 		tenant_button.pressed.connect(_on_tenant_selected.bind(tenant_button))
 	
 	_done_button.pressed.connect(_on_finished_placing)
-	_done_button.visible = true
-	_done_button.disabled = true
 
 func exit() -> void:
 	for tenant_button in _tenant_buttons.get_children():

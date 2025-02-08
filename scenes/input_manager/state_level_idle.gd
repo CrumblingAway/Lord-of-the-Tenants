@@ -5,11 +5,14 @@ var _building_floor : BuildingFloor:
 		return _building_floor
 	set(new_building_floor):
 		_building_floor = new_building_floor
+var _done_button : Button
 
 ########## StateLevelIdle methods. ##########
 
 func init(level: Level) -> StateLevelIdle:
 	_building_floor = level.building_floors[-1]
+	_done_button = level.ui_layer.done_button
+	_done_button.disabled = true
 	
 	return self
 
