@@ -959,6 +959,7 @@ texture_region_size = Vector2i(64, 64)
 9:12/0/terrains_peering_bit/bottom_left_corner = 2
 9:12/0/terrains_peering_bit/left_side = 2
 9:12/0/terrains_peering_bit/top_side = 2
+6:0/0 = 0
 
 [resource]
 tile_size = Vector2i(64, 64)
