@@ -14,5 +14,5 @@ static func printdbg(message: String, callable: Callable = func(): return []) ->
 	else:
 		print(message)
 
-static func randi_range(from: int, to: int) -> int:
+static func rand_int_range(from: int, to: int) -> int:
 	return rng.randi_range(from, to)
