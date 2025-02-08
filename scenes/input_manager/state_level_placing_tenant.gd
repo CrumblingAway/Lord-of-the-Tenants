@@ -14,6 +14,7 @@ var _player : Player:
 		_player = new_player
 var _tenants : Array
 var _tenant_buttons : VBoxContainer
+var _done_button : Button
 
 ########## StateLevelPlacingTenant methods. ##########
 
@@ -22,6 +23,7 @@ func init(level: Level) -> StateLevelPlacingTenant:
 	_player = level.player
 	_tenants = _player.tenants
 	_tenant_buttons = level.ui_layer.tenant_buttons
+	_done_button = level.ui_layer.done_button
 	
 	return self
 
@@ -32,8 +34,13 @@ func _on_tenant_selected(tenant_button: UILayer.TenantButton) -> void:
 		for child in _tenant_buttons.get_children():
 			if child == tenant_button:
 				_tenant_buttons.remove_child(child)
+		if _tenant_buttons.get_children().size() == 0:
+			_done_button.disabled = false
 	else:
 		Utils.printdbg("Failed to place tenant %s.", func(): return [tenant_button.tenant])
+
+func _on_finished_placing() -> void:
+	Utils.printdbg("Level completed!")
 
 ########## State methods. ##########
 
@@ -41,6 +48,10 @@ func enter() -> void:
 	for tenant_button in _tenant_buttons.get_children():
 		tenant_button = tenant_button as UILayer.TenantButton
 		tenant_button.pressed.connect(_on_tenant_selected.bind(tenant_button))
+	
+	_done_button.pressed.connect(_on_finished_placing)
+	_done_button.visible = true
+	_done_button.disabled = true
 
 func exit() -> void:
 	for tenant_button in _tenant_buttons.get_children():
