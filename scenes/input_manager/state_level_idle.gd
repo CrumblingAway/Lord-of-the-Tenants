@@ -25,7 +25,7 @@ func exit() -> void:
 	pass
 
 func process() -> void:
-	var mouse_position : Vector2 = get_viewport().get_mouse_position()
+	var mouse_position : Vector2 = get_viewport().get_camera_2d().get_global_mouse_position()
 	
 	_building_floor.highlight_apartment_at_global_position(mouse_position)
 	if Input.is_action_just_pressed("left_click"):

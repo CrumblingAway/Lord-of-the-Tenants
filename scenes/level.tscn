@@ -8,6 +8,8 @@
 [node name="level" type="Node"]
 script = ExtResource("1_wapy7")
 
+[node name="camera" type="Camera2D" parent="."]
+
 [node name="level_input_manager" parent="." node_paths=PackedStringArray("initial_state") instance=ExtResource("2_eq8e1")]
 initial_state = NodePath("state_level_idle")
 
