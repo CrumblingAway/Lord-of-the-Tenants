@@ -34,7 +34,6 @@ func init(level: Level) -> void:
 				state.finished_placing_tenants.connect(level.advance_floor)
 			_:
 				pass
-		state.transition_to.connect(transition_to_state)
 	
 	if initial_state:
 		transition_to_state(initial_state.name)
@@ -57,6 +56,7 @@ func transition_to_previous_state() -> void:
 func _ready() -> void:
 	for child_state in get_children():
 		states.push_back(child_state)
+		child_state.transition_to.connect(transition_to_state)
 
 func _process(_delta: float) -> void:
 	if current_state:
