@@ -29,7 +29,10 @@ func init(level: Level) -> StateLevelPlacingTenant:
 	_tenant_buttons = level.ui_layer.tenant_buttons
 	_done_button = level.ui_layer.done_button
 	
-	_done_button.pressed.connect(_on_finished_placing)
+	if not _done_button.pressed.is_connected(_on_finished_placing):
+		_done_button.pressed.connect(_on_finished_placing)
+	if not finished_placing_tenants.is_connected(level.advance_floor):
+		finished_placing_tenants.connect(level.advance_floor)
 	
 	return self
 

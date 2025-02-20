@@ -31,7 +31,6 @@ func init(level: Level) -> void:
 				state.init(level)
 			"state_level_placing_tenant":
 				state.init(level)
-				state.finished_placing_tenants.connect(level.advance_floor)
 			_:
 				pass
 	
