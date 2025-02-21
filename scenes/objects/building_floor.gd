@@ -125,6 +125,11 @@ func mark_apartment_occupied(apartment: Apartment) -> void:
 	for tile in apartment.tiles:
 		_tilemap.set_cell(floor_layer, tile, 0, Vector2i(6, 0))
 
+func unmark_apartment_occupied(apartment: Apartment) -> void:
+	var floor_layer : int = _get_apartment_floor_layer(apartment, ApartmentLayer.FLOOR)
+	for tile in apartment.tiles:
+		_tilemap.set_cell(floor_layer, tile, 0, Vector2i(0, 0))
+
 func place_tenant_in_apartment(tenant: Tenant, apartment: Apartment) -> bool:
 	var apartment_problems : Array = _evaluate_apartment_for_tenant(apartment, tenant)
 	if apartment_problems.size() > 0:
@@ -140,7 +145,7 @@ func clear_tenants() -> void:
 	for apartment in _apartments:
 		apartment.clear_tenant()
 
-func clear_tenant(apartment: Apartment) -> void:
+func clear_tenant_from_apartment(apartment: Apartment) -> void:
 	apartment.clear_tenant()
 
 func register_tiles_as_apartment(tiles: Array) -> void:

@@ -5,12 +5,17 @@ var _building_floor : BuildingFloor:
 		return _building_floor
 	set(new_building_floor):
 		_building_floor = new_building_floor
+var _player : Player
+var _tenant_buttons : VBoxContainer
 var _done_button : Button
 
 ########## StateLevelIdle methods. ##########
 
 func init(level: Level) -> StateLevelIdle:
 	_building_floor = level.building_floors[-1]
+	
+	_player = level.player
+	_tenant_buttons = level.ui_layer.tenant_buttons
 	_done_button = level.ui_layer.done_button
 	_done_button.disabled = true
 	
@@ -44,6 +49,20 @@ func process() -> void:
 			_building_floor.highlight_adjacent_apartments_to_hovered()
 			transition_to.emit("state_level_placing_tenant")
 	elif Input.is_action_just_pressed("right_click"):
-		_building_floor.remove_apartment_at_global_position(mouse_position)
+		var hovered_apartment : Apartment = _building_floor.get_apartment_at_global_position(mouse_position)
+		if hovered_apartment:
+			if not hovered_apartment.tenant:
+				_building_floor.remove_apartment_at_global_position(mouse_position)
+			else:
+				# TODO: Cleanup. Refer to Level::_init_tenant_buttons.
+				var tenant : Tenant = hovered_apartment.tenant
+				var tenant_button : UILayer.TenantButton = UILayer.TenantButton.new().init(tenant)
+				tenant_button.text = "NT: %d, NO: %d" % [tenant.noise_tolerance, tenant.noise_output]
+				_tenant_buttons.add_child(tenant_button)
+				_player.tenants.push_back(tenant)
+				_done_button.disabled = true
+				
+				_building_floor.clear_tenant_from_apartment(hovered_apartment)
+				_building_floor.unmark_apartment_occupied(hovered_apartment)
 	elif Input.is_action_just_pressed("middle_click"):
 		transition_to.emit("state_level_selecting_tiles")
