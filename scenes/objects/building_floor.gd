@@ -19,7 +19,7 @@ enum ApartmentLayer
 
 signal tenant_apartment_mismatch(reasons: Array)
 signal tenant_placed_successfully
-signal apartment_tiles_hovered(tiles: Array)
+signal apartment_hovered(apartment: Apartment)
 signal tile_reserved(tile: Vector2i)
 signal tile_occupied(tile: Vector2i)
 signal tile_unoccupied(tile: Vector2i)
@@ -104,7 +104,7 @@ func highlight_apartment_at_global_position(glb_position: Vector2) -> void:
 	
 	_tilemap.set_cells_terrain_connect(Layer.HIGHLIGHT, apartment.tiles, 0, 0, false)
 	_highlighted_apartment = apartment
-	apartment_tiles_hovered.emit(_highlighted_apartment.tiles)
+	apartment_hovered.emit(apartment)
 
 func highlight_reserved_tiles() -> void:
 	_clear_highlight()
