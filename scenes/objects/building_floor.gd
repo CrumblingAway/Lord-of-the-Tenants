@@ -19,6 +19,12 @@ enum ApartmentLayer
 
 signal tenant_apartment_mismatch(reasons: Array)
 signal tenant_placed_successfully
+signal apartment_tiles_hovered(tiles: Array)
+signal tile_reserved(tile: Vector2i)
+signal tile_occupied(tile: Vector2i)
+signal tile_unoccupied(tile: Vector2i)
+signal apartment_registered(apartment: Apartment)
+signal apartment_unregistered(apartment: Apartment)
 
 ########## Fields. ##########
 
@@ -98,11 +104,13 @@ func highlight_apartment_at_global_position(glb_position: Vector2) -> void:
 	
 	_tilemap.set_cells_terrain_connect(Layer.HIGHLIGHT, apartment.tiles, 0, 0, false)
 	_highlighted_apartment = apartment
+	apartment_tiles_hovered.emit(_highlighted_apartment.tiles)
 
 func highlight_reserved_tiles() -> void:
 	_clear_highlight()
 	for tile in _reserved_tiles:
 		_tilemap.set_cell(Layer.HIGHLIGHT, tile, 0, Vector2i(5, 3))
+		tile_reserved.emit(tile)
 
 func highlight_adjacent_apartments_to_hovered() -> void:
 	var adjacent_apartments : Array = _get_adjacent_apartments(_highlighted_apartment)
@@ -124,11 +132,13 @@ func mark_apartment_occupied(apartment: Apartment) -> void:
 	var floor_layer : int = _get_apartment_floor_layer(apartment, ApartmentLayer.FLOOR)
 	for tile in apartment.tiles:
 		_tilemap.set_cell(floor_layer, tile, 0, Vector2i(6, 0))
+		tile_occupied.emit(tile)
 
 func unmark_apartment_occupied(apartment: Apartment) -> void:
 	var floor_layer : int = _get_apartment_floor_layer(apartment, ApartmentLayer.FLOOR)
 	for tile in apartment.tiles:
 		_tilemap.set_cell(floor_layer, tile, 0, Vector2i(0, 0))
+		tile_unoccupied.emit(tile)
 
 func place_tenant_in_apartment(tenant: Tenant, apartment: Apartment) -> bool:
 	var apartment_problems : Array = _evaluate_apartment_for_tenant(apartment, tenant)
@@ -158,6 +168,7 @@ func register_tiles_as_apartment(tiles: Array) -> void:
 		_tilemap.add_layer(_tilemap.get_layers_count())
 	
 	_tilemap.set_cells_terrain_connect(_get_apartment_floor_layer(apartment, ApartmentLayer.WALLS), tiles, 0, 1, true)
+	apartment_registered.emit(apartment)
 
 func register_reserved_tiles_as_apartment() -> void:
 	if _reserved_tiles.size() == 0:
@@ -175,6 +186,7 @@ func remove_apartment_at_global_position(glb_position: Vector2) -> void:
 	for _layer_idx in range(ApartmentLayer.COUNT):
 		_tilemap.remove_layer(apartment_floor_layer)
 	
+	apartment_unregistered.emit(apartment)
 	_apartments.erase(apartment)
 
 func get_noise_input_in_apartment(apartment: Apartment) -> int:
