@@ -5,6 +5,7 @@ class_name Level extends Node
 @onready var camera : Camera2D = $camera
 @onready var input_manager : LevelInputManager = $level_input_manager
 @onready var building_floors : Array = []
+@onready var building_floor_renderer : BuildingFloorRenderer = $building_floor_renderer
 @onready var player : Player = $player
 @onready var ui_layer : UILayer = $ui_layer
 
@@ -35,6 +36,7 @@ func advance_floor() -> void:
 	building_floors.push_back(new_building_floor)
 	if building_floors.size() == 1:
 		camera.global_position = Vector2(_floor_width, _floor_height) * new_building_floor._tilemap.tile_set.tile_size.x / 2
+	building_floor_renderer.building_floor = new_building_floor
 	
 	player.tenants = _create_tenants_for_floor()
 	_init_tenant_buttons(player.tenants)

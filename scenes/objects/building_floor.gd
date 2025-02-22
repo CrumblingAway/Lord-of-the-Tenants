@@ -102,7 +102,7 @@ func highlight_apartment_at_global_position(glb_position: Vector2) -> void:
 	else:
 		_clear_highlight()
 	
-	_tilemap.set_cells_terrain_connect(Layer.HIGHLIGHT, apartment.tiles, 0, 0, false)
+#	_tilemap.set_cells_terrain_connect(Layer.HIGHLIGHT, apartment.tiles, 0, 0, false)
 	_highlighted_apartment = apartment
 	apartment_hovered.emit(apartment)
 
