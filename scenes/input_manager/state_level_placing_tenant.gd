@@ -37,9 +37,9 @@ func init(level: Level) -> StateLevelPlacingTenant:
 	return self
 
 func _on_tenant_selected(tenant_button: UILayer.TenantButton) -> void:
-	if _building_floor.place_tenant_in_apartment(tenant_button.tenant, _building_floor.get_highlighted_apartment()):
+	if _building_floor.place_tenant_in_apartment(tenant_button.tenant, _building_floor.get_selected_apartment()):
 		Utils.printdbg("Tenant %s placed successfully.", func(): return [tenant_button.tenant])
-		_building_floor.mark_apartment_occupied(_building_floor.get_highlighted_apartment())
+		_building_floor.mark_apartment_occupied(_building_floor.get_selected_apartment())
 		_building_floor.unhighlight_adjacent_apartments_to_hovered()
 		for child in _tenant_buttons.get_children():
 			if child == tenant_button:

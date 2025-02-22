@@ -45,7 +45,7 @@ func init(
 			_tilemap.set_cell(0, Vector2i(x, y), 0, Vector2i.ZERO)
 	return self
 
-func get_highlighted_apartment() -> Apartment:
+func get_selected_apartment() -> Apartment:
 	return _highlighted_apartment
 
 func get_apartment_at_global_position(glb_position: Vector2) -> Apartment:
