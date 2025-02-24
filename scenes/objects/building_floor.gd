@@ -100,34 +100,8 @@ func unreserve_all_tiles() -> void:
 func highlight_apartment_at_global_position(glb_position: Vector2) -> void:
 	var apartment : Apartment = get_apartment_at_global_position(glb_position)
 	if not apartment:
-		_clear_highlight()
-		_highlighted_apartment = null
 		return
-	
-	if apartment == _highlighted_apartment:
-		return
-	else:
-		_clear_highlight()
-	
-#	_tilemap.set_cells_terrain_connect(Layer.HIGHLIGHT, apartment.tiles, 0, 0, false)
-	_highlighted_apartment = apartment
 	apartment_hovered.emit(apartment)
-
-func highlight_reserved_tiles() -> void:
-	_clear_highlight()
-	for tile in _reserved_tiles:
-		_tilemap.set_cell(Layer.HIGHLIGHT, tile, 0, Vector2i(5, 3))
-
-func highlight_adjacent_apartments_to_hovered() -> void:
-	var adjacent_apartments : Array = _get_adjacent_apartments(_highlighted_apartment)
-	for adjacent_apartment in adjacent_apartments:
-		_tilemap.set_cells_terrain_connect(
-			_get_apartment_floor_layer(adjacent_apartment, ApartmentLayer.HIGHLIGHT),
-			adjacent_apartment.tiles,
-			0,
-			2,
-			true
-		)
 
 func unhighlight_adjacent_apartments_to_hovered() -> void:
 	var adjacent_apartments : Array = _get_adjacent_apartments(_highlighted_apartment)

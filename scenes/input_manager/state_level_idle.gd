@@ -45,8 +45,7 @@ func process() -> void:
 						"%d/%d" % [total_noise, apartment.get_noise_tolerance()]
 					]
 			)
-			
-			_building_floor.highlight_adjacent_apartments_to_hovered()
+			# TODO: Select apartment.
 			transition_to.emit("state_level_placing_tenant")
 	elif Input.is_action_just_pressed("right_click"):
 		var hovered_apartment : Apartment = _building_floor.get_apartment_at_global_position(mouse_position)
@@ -61,8 +60,5 @@ func process() -> void:
 				_tenant_buttons.add_child(tenant_button)
 				_player.tenants.push_back(tenant)
 				_done_button.disabled = true
-				
-				_building_floor.clear_tenant_from_apartment(hovered_apartment)
-				_building_floor.unmark_apartment_occupied(hovered_apartment)
 	elif Input.is_action_just_pressed("middle_click"):
 		transition_to.emit("state_level_selecting_tiles")

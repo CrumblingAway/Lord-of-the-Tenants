@@ -9,6 +9,8 @@ var building_floor : BuildingFloor:
 		_connect_signals()
 @onready var _building_floor_renderer : BuildingFloorRenderer = $building_floor_renderer
 
+var _hovered_apartment: Apartment
+
 ########## BuildingFloorManager methods. ##########
 
 func _connect_signals() -> void:
@@ -21,6 +23,9 @@ func _connect_signals() -> void:
 	building_floor.apartment_unregistered.connect(_render_unregistered_apartment)
 
 func _render_hovered_apartment(apartment: Apartment) -> void:
+	if apartment != _hovered_apartment:
+		_building_floor_renderer.clear_highlight()
+		_hovered_apartment = apartment
 	_building_floor_renderer.render_hovered_apartment(apartment)
 
 func _render_selected_apartment(apartment: Apartment) -> void:
@@ -34,6 +39,8 @@ func _render_unselected_apartment(apartment: Apartment) -> void:
 		_building_floor_renderer.render_unadjacent_apartment(adjacent_apartment)
 
 func _render_registered_apartment(apartment: Apartment) -> void:
+	for tile in apartment.tiles:
+		_building_floor_renderer.render_unreserved_tile(tile)
 	_building_floor_renderer.render_apartment_occupied(apartment)
 
 func _render_unregistered_apartment(apartment: Apartment) -> void:

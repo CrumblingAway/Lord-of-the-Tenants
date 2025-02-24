@@ -74,7 +74,7 @@ func render_apartment_occupied(apartment: Apartment) -> void:
 func render_apartment_unoccupied(apartment: Apartment) -> void:
 	building_floor._tilemap.clear_layer(_get_apartment_floor_layer(apartment, ApartmentLayer.WALLS))
 
-func _clear_highlight() -> void:
+func clear_highlight() -> void:
 	building_floor._tilemap.clear_layer(Layer.HIGHLIGHT)
 
 func _get_apartment_floor_layer(apartment: Apartment, layer: ApartmentLayer) -> int:

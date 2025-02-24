@@ -67,11 +67,10 @@ func exit() -> void:
 		tenant_button.pressed.disconnect(_on_tenant_selected)
 
 func process() -> void:
-	_building_floor.highlight_reserved_tiles()
 	if Input.is_action_just_pressed("left_click"):
 		pass
 	elif Input.is_action_just_pressed("right_click"):
-		_building_floor.unhighlight_adjacent_apartments_to_hovered()
+		# TODO: Unselect apartment.
 		transition_to.emit("state_level_idle")
 	elif Input.is_action_just_pressed("middle_click"):
 		pass
