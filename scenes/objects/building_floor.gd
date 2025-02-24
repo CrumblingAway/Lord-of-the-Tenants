@@ -21,8 +21,9 @@ signal tenant_apartment_mismatch(reasons: Array)
 signal tenant_placed_successfully
 signal apartment_hovered(apartment: Apartment)
 signal tile_reserved(tile: Vector2i)
-signal tile_occupied(tile: Vector2i)
-signal tile_unoccupied(tile: Vector2i)
+signal tile_unreserved(tile: Vector2i)
+signal tile_occupied(tile: Vector2i, apartment: Apartment)
+signal tile_unoccupied(tile: Vector2i, apartment: Apartment)
 signal apartment_registered(apartment: Apartment)
 signal apartment_unregistered(apartment: Apartment)
 
@@ -80,14 +81,20 @@ func is_tile_at_global_position_reserved(glb_position: Vector2) -> bool:
 	return _reserved_tiles.has(_tilemap.local_to_map(glb_position))
 
 func reserve_tile_at_global_position(glb_position: Vector2) -> void:
-	_reserved_tiles.push_back(_tilemap.local_to_map(glb_position))
+	var tile : Vector2i = _tilemap.local_to_map(glb_position)
+	_reserved_tiles.push_back(tile)
+	tile_reserved.emit(tile)
 
 func unreserve_tile_at_global_position(glb_position: Vector2) -> void:
-	var tile_index : int = _reserved_tiles.find(_tilemap.local_to_map(glb_position))
+	var tile : Vector2i = _tilemap.local_to_map(glb_position)
+	var tile_index : int = _reserved_tiles.find(tile)
 	if tile_index != -1:
 		_reserved_tiles.remove_at(tile_index)
+		tile_unreserved.emit(tile)
 
 func unreserve_all_tiles() -> void:
+	for tile in _reserved_tiles:
+		tile_unreserved.emit(tile)
 	_reserved_tiles.clear()
 
 func highlight_apartment_at_global_position(glb_position: Vector2) -> void:
@@ -110,7 +117,6 @@ func highlight_reserved_tiles() -> void:
 	_clear_highlight()
 	for tile in _reserved_tiles:
 		_tilemap.set_cell(Layer.HIGHLIGHT, tile, 0, Vector2i(5, 3))
-		tile_reserved.emit(tile)
 
 func highlight_adjacent_apartments_to_hovered() -> void:
 	var adjacent_apartments : Array = _get_adjacent_apartments(_highlighted_apartment)
@@ -132,13 +138,13 @@ func mark_apartment_occupied(apartment: Apartment) -> void:
 	var floor_layer : int = _get_apartment_floor_layer(apartment, ApartmentLayer.FLOOR)
 	for tile in apartment.tiles:
 		_tilemap.set_cell(floor_layer, tile, 0, Vector2i(6, 0))
-		tile_occupied.emit(tile)
+		tile_occupied.emit(tile, apartment)
 
 func unmark_apartment_occupied(apartment: Apartment) -> void:
 	var floor_layer : int = _get_apartment_floor_layer(apartment, ApartmentLayer.FLOOR)
 	for tile in apartment.tiles:
 		_tilemap.set_cell(floor_layer, tile, 0, Vector2i(0, 0))
-		tile_unoccupied.emit(tile)
+		tile_unoccupied.emit(tile, apartment)
 
 func place_tenant_in_apartment(tenant: Tenant, apartment: Apartment) -> bool:
 	var apartment_problems : Array = _evaluate_apartment_for_tenant(apartment, tenant)
