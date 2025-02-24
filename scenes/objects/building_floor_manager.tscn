@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://dwyucse0m8ot2"]
+
+[ext_resource type="Script" path="res://scenes/objects/building_floor_manager.gd" id="1_2r2jh"]
+[ext_resource type="PackedScene" uid="uid://c3d8rqtclryj5" path="res://scenes/objects/building_floor_renderer.tscn" id="2_4xry4"]
+
+[node name="building_floor_manager" type="Node"]
+script = ExtResource("1_2r2jh")
+
+[node name="building_floor_renderer" parent="." instance=ExtResource("2_4xry4")]
