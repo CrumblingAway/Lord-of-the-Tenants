@@ -1,5 +1,6 @@
 class_name StateLevelIdle extends State
 
+var _building_floor_manager : BuildingFloorManager
 var _building_floor : BuildingFloor:
 	get:
 		return _building_floor
@@ -12,6 +13,7 @@ var _done_button : Button
 ########## StateLevelIdle methods. ##########
 
 func init(level: Level) -> StateLevelIdle:
+	_building_floor_manager = level.building_floor_manager
 	_building_floor = level.building_floors[-1]
 	
 	_player = level.player
@@ -32,7 +34,7 @@ func exit() -> void:
 func process() -> void:
 	var mouse_position : Vector2 = get_viewport().get_camera_2d().get_global_mouse_position()
 	
-	_building_floor.highlight_apartment_at_global_position(mouse_position)
+	_building_floor_manager.highlight_hovered_apartment_at_global_position(mouse_position)
 	if Input.is_action_just_pressed("left_click"):
 		if _building_floor.get_apartment_at_global_position(mouse_position):
 			Utils.printdbg(
@@ -46,6 +48,7 @@ func process() -> void:
 					]
 			)
 			# TODO: Select apartment.
+			_building_floor_manager.clear_highlight()
 			transition_to.emit("state_level_placing_tenant")
 	elif Input.is_action_just_pressed("right_click"):
 		var hovered_apartment : Apartment = _building_floor.get_apartment_at_global_position(mouse_position)
@@ -61,4 +64,5 @@ func process() -> void:
 				_player.tenants.push_back(tenant)
 				_done_button.disabled = true
 	elif Input.is_action_just_pressed("middle_click"):
+		_building_floor_manager.clear_highlight()
 		transition_to.emit("state_level_selecting_tiles")

@@ -13,6 +13,12 @@ var _hovered_apartment: Apartment
 
 ########## BuildingFloorManager methods. ##########
 
+func highlight_hovered_apartment_at_global_position(glb_position: Vector2) -> void:
+	_render_hovered_apartment(building_floor.get_apartment_at_global_position(glb_position))
+
+func clear_highlight() -> void:
+	_building_floor_renderer.clear_highlight()
+
 func _connect_signals() -> void:
 	building_floor.apartment_hovered.connect(_render_hovered_apartment)
 	building_floor.tile_reserved.connect(_render_reserved_tile)
@@ -26,7 +32,8 @@ func _render_hovered_apartment(apartment: Apartment) -> void:
 	if apartment != _hovered_apartment:
 		_building_floor_renderer.clear_highlight()
 		_hovered_apartment = apartment
-	_building_floor_renderer.render_hovered_apartment(apartment)
+	if apartment:
+		_building_floor_renderer.render_hovered_apartment(apartment)
 
 func _render_selected_apartment(apartment: Apartment) -> void:
 	_building_floor_renderer.render_selected_apartment(apartment)
