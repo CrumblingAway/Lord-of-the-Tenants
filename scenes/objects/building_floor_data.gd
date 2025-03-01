@@ -4,7 +4,11 @@ class_name BuildingFloorData extends Object
 
 var _height: int
 var _width: int
-var _apartments : Array
+var apartments : Array:
+	get:
+		return apartments
+	set(other_apartment):
+		apartments = other_apartment
 
 ########## BuildingFloor methods. ##########
 
@@ -18,22 +22,16 @@ func init(
 	return self
 
 func get_apartment_at_tile_position(tile: Vector2i) -> Apartment:
-	for apartment in _apartments:
+	for apartment in apartments:
 		if apartment.contains_tile_position(tile):
 			return apartment
 	return null
-
-func is_tile_available(tile: Vector2i) -> bool:
-	for apartment in _apartments:
-		if apartment.contains_tile_position(tile):
-			return false
-	return true
 
 func place_tenant_in_apartment(tenant: Tenant, apartment: Apartment) -> void:
 	apartment.tenant = tenant
 
 func clear_tenants() -> void:
-	for apartment in _apartments:
+	for apartment in apartments:
 		apartment.clear_tenant()
 
 func clear_tenant_from_apartment(apartment: Apartment) -> void:
@@ -43,16 +41,7 @@ func register_tiles_as_apartment(tiles: Array) -> void:
 	# TODO: Only allow contiguous apartments.
 	
 	var apartment : Apartment = Apartment.new().init(tiles)
-	_apartments.push_back(apartment)
-
-func get_adjacent_noise_input_in_apartment(apartment: Apartment) -> int:
-	var noise_input : int = 0
-	
-	var adjacent_apartments : Array = get_adjacent_apartments(apartment)
-	for adjacent_apartment in adjacent_apartments:
-		noise_input += adjacent_apartment.get_noise_output()
-	
-	return noise_input
+	apartments.push_back(apartment)
 
 func get_adjacent_apartments(apartment: Apartment) -> Array:
 	var adjacent_apartments : Array = []

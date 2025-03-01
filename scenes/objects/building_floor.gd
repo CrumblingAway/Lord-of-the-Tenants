@@ -24,11 +24,9 @@ signal tenant_placed_successfully
 
 @onready var _tilemap : TileMap = $TileMap
 
-var _apartments : Array
+var _building_floor_data : BuildingFloorData
 var _highlighted_apartment : Apartment
-
 var _reserved_tiles : Array
-
 var _floor_below : BuildingFloor
 
 ########## BuildingFloor methods. ##########
@@ -38,6 +36,7 @@ func init(
 	width: int,
 	floor_below: BuildingFloor = null
 ) -> BuildingFloor:
+	_building_floor_data = BuildingFloorData.new().init(height, width)
 	_floor_below = floor_below
 	
 	for x in range(width):
@@ -48,26 +47,20 @@ func init(
 func get_highlighted_apartment() -> Apartment:
 	return _highlighted_apartment
 
-func get_apartment_at_global_position(glb_position: Vector2) -> Apartment:
-	return get_apartment_at_tile_position(_tilemap.local_to_map(glb_position))
+func get_apartment_at_tile_position(tile_position: Vector2i) -> Apartment:
+	return _building_floor_data.get_apartment_at_tile_position(tile_position)
 
-func get_apartment_at_tile_position(tile: Vector2i) -> Apartment:
-	for apartment in _apartments:
-		if apartment.contains_tile_position(tile):
-			return apartment
-	return null
+func get_apartment_at_global_position(glb_position: Vector2) -> Apartment:
+	return _building_floor_data.get_apartment_at_tile_position(_tilemap.local_to_map(glb_position))
 
 func is_tile_at_global_position_available(glb_position: Vector2) -> bool:
 	var tile_position = _tilemap.local_to_map(glb_position)
 	if not _tilemap.get_used_cells(0).has(tile_position):
 		return false
-	
 	if _reserved_tiles.has(tile_position):
 		return false
-	
-	for apartment in _apartments:
-		if apartment.contains_tile_position(tile_position):
-			return false
+	if _building_floor_data.get_apartment_at_tile_position(tile_position):
+		return false
 	return true
 
 func is_tile_at_global_position_reserved(glb_position: Vector2) -> bool:
@@ -105,7 +98,7 @@ func highlight_reserved_tiles() -> void:
 		_tilemap.set_cell(Layer.HIGHLIGHT, tile, 0, Vector2i(5, 3))
 
 func highlight_adjacent_apartments_to_hovered() -> void:
-	var adjacent_apartments : Array = _get_adjacent_apartments(_highlighted_apartment)
+	var adjacent_apartments : Array = _building_floor_data.get_adjacent_apartments(_highlighted_apartment)
 	for adjacent_apartment in adjacent_apartments:
 		_tilemap.set_cells_terrain_connect(
 			_get_apartment_floor_layer(adjacent_apartment, ApartmentLayer.HIGHLIGHT),
@@ -116,7 +109,7 @@ func highlight_adjacent_apartments_to_hovered() -> void:
 		)
 
 func unhighlight_adjacent_apartments_to_hovered() -> void:
-	var adjacent_apartments : Array = _get_adjacent_apartments(_highlighted_apartment)
+	var adjacent_apartments : Array = _building_floor_data.get_adjacent_apartments(_highlighted_apartment)
 	for adjacent_apartment in adjacent_apartments:
 		_tilemap.clear_layer(_get_apartment_floor_layer(adjacent_apartment, ApartmentLayer.HIGHLIGHT))
 
@@ -136,27 +129,22 @@ func place_tenant_in_apartment(tenant: Tenant, apartment: Apartment) -> bool:
 		tenant_apartment_mismatch.emit(apartment_problems)
 		return false
 	
-	apartment.tenant = tenant
+	_building_floor_data.place_tenant_in_apartment(tenant, apartment)
 	tenant_placed_successfully.emit()
 	
 	return true
 
-func clear_tenants() -> void:
-	for apartment in _apartments:
-		apartment.clear_tenant()
-
 func clear_tenant_from_apartment(apartment: Apartment) -> void:
-	apartment.clear_tenant()
+	_building_floor_data.clear_tenant_from_apartment(apartment)
 
 func register_tiles_as_apartment(tiles: Array) -> void:
 	# TODO: Only allow contiguous apartments.
-	
-	var apartment : Apartment = Apartment.new().init(tiles)
-	_apartments.push_back(apartment)
+	_building_floor_data.register_tiles_as_apartment(tiles)
 	
 	for layer_idx in range(ApartmentLayer.COUNT):
 		_tilemap.add_layer(_tilemap.get_layers_count())
 	
+	var apartment : Apartment = _building_floor_data.get_apartment_at_tile_position(tiles[0])
 	_tilemap.set_cells_terrain_connect(_get_apartment_floor_layer(apartment, ApartmentLayer.WALLS), tiles, 0, 1, true)
 
 func register_reserved_tiles_as_apartment() -> void:
@@ -175,12 +163,12 @@ func remove_apartment_at_global_position(glb_position: Vector2) -> void:
 	for _layer_idx in range(ApartmentLayer.COUNT):
 		_tilemap.remove_layer(apartment_floor_layer)
 	
-	_apartments.erase(apartment)
+	_building_floor_data.apartments.erase(apartment)
 
 func get_noise_input_in_apartment(apartment: Apartment) -> int:
 	var noise_input : int = 0
 	
-	var adjacent_apartments : Array = _get_adjacent_apartments(apartment)
+	var adjacent_apartments : Array = _building_floor_data.get_adjacent_apartments(apartment)
 	for adjacent_apartment in adjacent_apartments:
 		noise_input += adjacent_apartment.get_noise_output()
 	var below_apartments : Array = _get_apartments_below(apartment)
@@ -188,24 +176,6 @@ func get_noise_input_in_apartment(apartment: Apartment) -> int:
 		noise_input += apartment_below.get_noise_output()
 	
 	return noise_input
-
-func _get_adjacent_apartments(apartment: Apartment) -> Array:
-	var adjacent_apartments : Array = []
-	
-	var four_connectivity : Array = [
-		Vector2i.UP,
-		Vector2i.DOWN,
-		Vector2i.LEFT,
-		Vector2i.RIGHT,
-	]
-	for tile in apartment.tiles:
-		for direction in four_connectivity:
-			var adjacent_apartment : Apartment = get_apartment_at_tile_position(tile + direction)
-			if adjacent_apartment \
-			   and not apartment == adjacent_apartment \
-			   and not adjacent_apartments.has(adjacent_apartment):
-				adjacent_apartments.push_back(adjacent_apartment)
-	return adjacent_apartments
 
 func _get_apartments_below(apartment: Apartment) -> Array:
 	if not _floor_below:
@@ -228,10 +198,10 @@ func _evaluate_apartment_for_tenant(apartment: Apartment, tenant: Tenant) -> Arr
 		problems.push_back("The apartment is too loud for the tenant.")
 	
 	# TODO: Optimize. Accumulate noise levels when placing tenants.
-	var adjacent_apartments : Array = _get_adjacent_apartments(apartment)
+	var adjacent_apartments : Array = _building_floor_data.get_adjacent_apartments(apartment)
 	for adjacent_apartment in adjacent_apartments:
 		var noise_input : int = tenant.noise_output
-		var next_adjacent_apartments : Array = _get_adjacent_apartments(adjacent_apartment)
+		var next_adjacent_apartments : Array = _building_floor_data.get_adjacent_apartments(adjacent_apartment)
 		
 		var exceeds_adjacent_apartment_tolerance : bool = false
 		for next_adjacent_apartment in next_adjacent_apartments:
@@ -246,7 +216,7 @@ func _evaluate_apartment_for_tenant(apartment: Apartment, tenant: Tenant) -> Arr
 	return problems
 
 func _get_apartment_floor_layer(apartment: Apartment, layer: ApartmentLayer) -> int:
-	var apartment_idx : int = _apartments.find(apartment)
+	var apartment_idx : int = _building_floor_data.apartments.find(apartment)
 	assert(apartment_idx != -1, "Apartment not found.")
 	return Layer.COUNT + ApartmentLayer.COUNT * apartment_idx + layer
 
