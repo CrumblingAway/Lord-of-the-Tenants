@@ -214,7 +214,7 @@ func _get_apartments_below(apartment: Apartment) -> Array:
 	var apartments_below : Array = []
 	for tile in apartment.tiles:
 		var apartment_below : Apartment = _floor_below.get_apartment_at_tile_position(tile)
-		if apartment_below:
+		if apartment_below and not apartments_below.has(apartment_below):
 			apartments_below.push_back(apartment_below)
 	return apartments_below
 
