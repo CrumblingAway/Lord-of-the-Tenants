@@ -2,6 +2,7 @@ class_name UILayer extends CanvasLayer
 
 @onready var tenant_buttons : VBoxContainer = $tenant_buttons
 @onready var done_button : Button = $done_button
+@onready var apt_creation_button : Button = $apt_creation_button
 
 func _ready() -> void:
 	pass

@@ -8,6 +8,7 @@ var _building_floor : BuildingFloor:
 var _player : Player
 var _tenant_buttons : VBoxContainer
 var _done_button : Button
+var _apt_creation_button : Button
 
 ########## StateLevelIdle methods. ##########
 
@@ -18,13 +19,15 @@ func init(level: Level) -> StateLevelIdle:
 	_tenant_buttons = level.ui_layer.tenant_buttons
 	_done_button = level.ui_layer.done_button
 	_done_button.disabled = true
+	_apt_creation_button = level.ui_layer.apt_creation_button
 	
 	return self
 
 ########## State methods. ##########
 
 func enter() -> void:
-	pass
+	_apt_creation_button.pressed.connect(_on_apt_creation_button_pressed)
+	_apt_creation_button.text = "Create apartments"
 
 func exit() -> void:
 	pass
@@ -64,5 +67,7 @@ func process() -> void:
 				
 				_building_floor.clear_tenant_from_apartment(hovered_apartment)
 				_building_floor.unmark_apartment_occupied(hovered_apartment)
-	elif Input.is_action_just_pressed("middle_click"):
-		transition_to.emit("state_level_selecting_tiles")
+
+func _on_apt_creation_button_pressed() -> void:
+	_apt_creation_button.pressed.disconnect(_on_apt_creation_button_pressed)
+	transition_to.emit("state_level_selecting_tiles")
