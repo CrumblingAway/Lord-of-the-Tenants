@@ -6,9 +6,12 @@ var _building_floor : BuildingFloor:
 	set(new_building_floor):
 		_building_floor = new_building_floor
 var _player : Player
+
 var _tenant_buttons : VBoxContainer
 var _done_button : Button
+var _transition_to_apt_creation_button : Button
 var _apt_creation_button : Button
+var _clear_selected_tiles_button : Button
 
 ########## StateLevelIdle methods. ##########
 
@@ -19,15 +22,20 @@ func init(level: Level) -> StateLevelIdle:
 	_tenant_buttons = level.ui_layer.tenant_buttons
 	_done_button = level.ui_layer.done_button
 	_done_button.disabled = true
+	_transition_to_apt_creation_button = level.ui_layer.transition_to_apt_creation_button
 	_apt_creation_button = level.ui_layer.apt_creation_button
+	_clear_selected_tiles_button = level.ui_layer.clear_selected_tiles_button
 	
 	return self
 
 ########## State methods. ##########
 
 func enter() -> void:
-	_apt_creation_button.pressed.connect(_on_apt_creation_button_pressed)
-	_apt_creation_button.text = "Create apartments"
+	_transition_to_apt_creation_button.pressed.connect(_on_transition_to_apt_creation_button_pressed)
+	_transition_to_apt_creation_button.text = "Create apartments"
+	
+	_apt_creation_button.visible = false
+	_clear_selected_tiles_button.visible = false
 
 func exit() -> void:
 	pass
@@ -68,6 +76,6 @@ func process() -> void:
 				_building_floor.clear_tenant_from_apartment(hovered_apartment)
 				_building_floor.unmark_apartment_occupied(hovered_apartment)
 
-func _on_apt_creation_button_pressed() -> void:
-	_apt_creation_button.pressed.disconnect(_on_apt_creation_button_pressed)
+func _on_transition_to_apt_creation_button_pressed() -> void:
+	_transition_to_apt_creation_button.pressed.disconnect(_on_transition_to_apt_creation_button_pressed)
 	transition_to.emit("state_level_selecting_tiles")
