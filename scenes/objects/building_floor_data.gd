@@ -44,6 +44,9 @@ func register_tiles_as_apartment(tiles: Array) -> void:
 	apartments.push_back(apartment)
 
 func get_adjacent_apartments(apartment: Apartment) -> Array:
+	if not apartment:
+		return []
+	
 	var adjacent_apartments : Array = []
 	
 	var four_connectivity : Array = [
