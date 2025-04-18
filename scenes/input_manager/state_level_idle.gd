@@ -31,7 +31,8 @@ func init(level: Level) -> StateLevelIdle:
 ########## State methods. ##########
 
 func enter() -> void:
-	_transition_to_apt_creation_button.pressed.connect(_on_transition_to_apt_creation_button_pressed)
+	if not _transition_to_apt_creation_button.pressed.is_connected(_on_transition_to_apt_creation_button_pressed):
+		_transition_to_apt_creation_button.pressed.connect(_on_transition_to_apt_creation_button_pressed)
 	_transition_to_apt_creation_button.text = "Create apartments"
 	
 	_apt_creation_button.visible = false
