@@ -153,17 +153,19 @@ func register_reserved_tiles_as_apartment() -> void:
 	register_tiles_as_apartment(_reserved_tiles)
 	_reserved_tiles.clear()
 
-func remove_apartment_at_global_position(glb_position: Vector2) -> void:
-	var apartment : Apartment = get_apartment_at_global_position(glb_position)
-	if not apartment \
-	   or apartment.tenant:
-		return
+func remove_apartment(apartment: Apartment) -> void:
+	assert(not apartment.tenant)
 	
 	var apartment_floor_layer : int = _get_apartment_floor_layer(apartment, ApartmentLayer.FLOOR)
 	for _layer_idx in range(ApartmentLayer.COUNT):
 		_tilemap.remove_layer(apartment_floor_layer)
 	
 	_building_floor_data.apartments.erase(apartment)
+
+func remove_apartment_at_global_position(glb_position: Vector2) -> void:
+	var apartment : Apartment = get_apartment_at_global_position(glb_position)
+	if apartment:
+		remove_apartment(apartment)
 
 func get_noise_input_in_apartment(apartment: Apartment) -> int:
 	var noise_input : int = 0

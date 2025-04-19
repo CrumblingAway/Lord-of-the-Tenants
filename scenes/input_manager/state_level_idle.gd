@@ -12,6 +12,7 @@ var _done_button : Button
 var _transition_to_apt_creation_button : Button
 var _apt_creation_button : Button
 var _clear_selected_tiles_button : Button
+var _remove_apt_button : Button
 
 ########## StateLevelIdle methods. ##########
 
@@ -25,6 +26,7 @@ func init(level: Level) -> StateLevelIdle:
 	_transition_to_apt_creation_button = level.ui_layer.transition_to_apt_creation_button
 	_apt_creation_button = level.ui_layer.apt_creation_button
 	_clear_selected_tiles_button = level.ui_layer.clear_selected_tiles_button
+	_remove_apt_button = level.ui_layer.remove_apt_button
 	
 	return self
 
@@ -37,6 +39,7 @@ func enter() -> void:
 	
 	_apt_creation_button.visible = false
 	_clear_selected_tiles_button.visible = false
+	_remove_apt_button.visible = false
 
 func exit() -> void:
 	pass
