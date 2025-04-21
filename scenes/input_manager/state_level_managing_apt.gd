@@ -86,7 +86,8 @@ func _on_finished_placing() -> void:
 func enter() -> void:
 	for tenant_button in _tenant_buttons.get_children():
 		tenant_button = tenant_button as UILayer.TenantButton
-		tenant_button.pressed.connect(_on_tenant_selected.bind(tenant_button))
+		if not tenant_button.pressed.is_connected(_on_tenant_selected.bind(tenant_button)):
+			tenant_button.pressed.connect(_on_tenant_selected.bind(tenant_button))
 	
 	_remove_apt_button.visible = true
 	_remove_apt_button.text = "Evict" if _building_floor.get_highlighted_apartment().tenant else "Demolish"
@@ -94,7 +95,8 @@ func enter() -> void:
 func exit() -> void:
 	for tenant_button in _tenant_buttons.get_children():
 		tenant_button = tenant_button as UILayer.TenantButton
-		tenant_button.pressed.disconnect(_on_tenant_selected)
+		if tenant_button.pressed.is_connected(_on_tenant_selected):
+			tenant_button.pressed.disconnect(_on_tenant_selected)
 
 func process() -> void:
 	_building_floor.highlight_reserved_tiles()
