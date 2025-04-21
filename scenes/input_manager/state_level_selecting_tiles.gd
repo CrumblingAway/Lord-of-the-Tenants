@@ -6,7 +6,8 @@ var _building_floor : BuildingFloor:
 	set(new_building_floor):
 		_building_floor = new_building_floor
 
-var _transition_to_apt_creation_button : Button
+var _enter_apt_creation_button : Button
+var _exit_apt_creation_button : Button
 var _apt_creation_button : Button
 var _clear_selected_tiles_button : Button
 
@@ -15,7 +16,10 @@ var _clear_selected_tiles_button : Button
 func init(level: Level) -> StateLevelSelectingTiles:
 	_building_floor = level.building_floors[-1]
 	
-	_transition_to_apt_creation_button = level.ui_layer.transition_to_apt_creation_button
+	_enter_apt_creation_button = level.ui_layer.enter_apt_creation_button
+	
+	_exit_apt_creation_button = level.ui_layer.exit_apt_creation_button
+	_exit_apt_creation_button.pressed.connect(_on_exit_apt_creation_button_pressed)
 	
 	_apt_creation_button = level.ui_layer.apt_creation_button
 	_apt_creation_button.pressed.connect(_on_apt_creation_button_pressed)
@@ -28,9 +32,8 @@ func init(level: Level) -> StateLevelSelectingTiles:
 ########## State methods. ##########
 
 func enter() -> void:
-	_transition_to_apt_creation_button.text = "Exit apartment creation"
-	_transition_to_apt_creation_button.pressed.connect(_on_transition_to_apt_creation_button_pressed)
-	
+	_enter_apt_creation_button.visible = false
+	_exit_apt_creation_button.visible = true
 	_apt_creation_button.visible = true
 	_clear_selected_tiles_button.visible = true
 
@@ -47,9 +50,8 @@ func process() -> void:
 		elif _building_floor.is_tile_at_global_position_reserved(mouse_position):
 			_building_floor.unreserve_tile_at_global_position(mouse_position)
 
-func _on_transition_to_apt_creation_button_pressed() -> void:
+func _on_exit_apt_creation_button_pressed() -> void:
 	_building_floor.unhighlight_adjacent_apartments_to_hovered()
-	_transition_to_apt_creation_button.pressed.disconnect(_on_transition_to_apt_creation_button_pressed)
 	transition_to.emit("state_level_idle")
 
 func _on_apt_creation_button_pressed() -> void:
