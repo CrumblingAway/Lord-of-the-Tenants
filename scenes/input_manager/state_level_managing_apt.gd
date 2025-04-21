@@ -89,6 +89,7 @@ func enter() -> void:
 		tenant_button.pressed.connect(_on_tenant_selected.bind(tenant_button))
 	
 	_remove_apt_button.visible = true
+	_remove_apt_button.text = "Evict" if _building_floor.get_highlighted_apartment().tenant else "Demolish"
 
 func exit() -> void:
 	for tenant_button in _tenant_buttons.get_children():
