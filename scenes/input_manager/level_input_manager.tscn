@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scenes/input_manager/level_input_manager.gd" id="1_pdd0t"]
 [ext_resource type="PackedScene" uid="uid://cxosn5idm1rca" path="res://scenes/input_manager/state_level_idle.tscn" id="2_r0e3w"]
 [ext_resource type="PackedScene" uid="uid://qq10cebpr2tn" path="res://scenes/input_manager/state_level_selecting_tiles.tscn" id="3_pcui3"]
-[ext_resource type="PackedScene" uid="uid://d4eabrhookse2" path="res://scenes/input_manager/state_level_placing_tenant.tscn" id="4_imt0a"]
+[ext_resource type="PackedScene" uid="uid://d4eabrhookse2" path="res://scenes/input_manager/state_level_managing_apt.tscn" id="4_imt0a"]
 
 [node name="level_input_manager" type="Node"]
 script = ExtResource("1_pdd0t")
@@ -12,4 +12,4 @@ script = ExtResource("1_pdd0t")
 
 [node name="state_level_selecting_tiles" parent="." instance=ExtResource("3_pcui3")]
 
-[node name="state_level_placing_tenant" parent="." instance=ExtResource("4_imt0a")]
+[node name="state_level_managing_apt" parent="." instance=ExtResource("4_imt0a")]

@@ -62,7 +62,7 @@ func process() -> void:
 			)
 			
 			_building_floor.highlight_adjacent_apartments_to_hovered()
-			transition_to.emit("state_level_placing_tenant")
+			transition_to.emit("state_level_managing_apt")
 	elif Input.is_action_just_pressed("right_click"):
 		var hovered_apartment : Apartment = _building_floor.get_apartment_at_global_position(mouse_position)
 		if hovered_apartment:

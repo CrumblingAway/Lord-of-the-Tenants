@@ -29,7 +29,7 @@ func init(level: Level) -> void:
 				state.init(level)
 			"state_level_selecting_tiles":
 				state.init(level)
-			"state_level_placing_tenant":
+			"state_level_managing_apt":
 				state.init(level)
 			_:
 				pass
