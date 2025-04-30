@@ -12,7 +12,6 @@ var _building_floor : BuildingFloor:
 	set(new_building_floor):
 		_building_floor = new_building_floor
 
-var _tenants : Array
 var _level : Level
 
 ########## StateLevelPlacingTenant methods. ##########
