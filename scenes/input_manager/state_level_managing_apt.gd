@@ -69,6 +69,7 @@ func _on_remove_apt_button_pressed() -> void:
 
 func _on_finished_placing() -> void:
 	Utils.printdbg("Level completed!")
+	_level.ui_layer.done_button.disabled = true
 	finished_placing_tenants.emit()
 
 ########## State methods. ##########
