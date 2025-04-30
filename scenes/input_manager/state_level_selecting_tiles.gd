@@ -15,9 +15,12 @@ func init(level: Level) -> StateLevelSelectingTiles:
 	
 	_level = level
 	
-	_level.ui_layer.exit_apt_creation_button.pressed.connect(_on_exit_apt_creation_button_pressed)
-	_level.ui_layer.apt_creation_button.pressed.connect(_on_apt_creation_button_pressed)
-	_level.ui_layer.clear_selected_tiles_button.pressed.connect(_on_clear_selected_tiles_button_pressed)
+	if not _level.ui_layer.exit_apt_creation_button.pressed.is_connected(_on_exit_apt_creation_button_pressed):
+		_level.ui_layer.exit_apt_creation_button.pressed.connect(_on_exit_apt_creation_button_pressed)
+	if not _level.ui_layer.apt_creation_button.pressed.is_connected(_on_apt_creation_button_pressed):
+		_level.ui_layer.apt_creation_button.pressed.connect(_on_apt_creation_button_pressed)
+	if not _level.ui_layer.clear_selected_tiles_button.pressed.is_connected(_on_clear_selected_tiles_button_pressed):
+		_level.ui_layer.clear_selected_tiles_button.pressed.connect(_on_clear_selected_tiles_button_pressed)
 	
 	if not level.building_floors[-1].tenant_apartment_mismatch.is_connected(_on_tenant_apartment_problems_received):
 		level.building_floors[-1].tenant_apartment_mismatch.connect(_on_tenant_apartment_problems_received)
