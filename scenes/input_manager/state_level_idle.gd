@@ -14,6 +14,7 @@ var _exit_apt_creation_button : Button
 var _apt_creation_button : Button
 var _clear_selected_tiles_button : Button
 var _remove_apt_button : Button
+var _tenant_placement_error_label : RichTextLabel
 
 ########## StateLevelIdle methods. ##########
 
@@ -29,6 +30,7 @@ func init(level: Level) -> StateLevelIdle:
 	_apt_creation_button = level.ui_layer.apt_creation_button
 	_clear_selected_tiles_button = level.ui_layer.clear_selected_tiles_button
 	_remove_apt_button = level.ui_layer.remove_apt_button
+	_tenant_placement_error_label = level.ui_layer.tenant_placement_error_label
 	
 	return self
 
@@ -44,6 +46,7 @@ func enter() -> void:
 	_apt_creation_button.visible = false
 	_clear_selected_tiles_button.visible = false
 	_remove_apt_button.visible = false
+	_tenant_placement_error_label.visible = false
 
 func exit() -> void:
 	pass

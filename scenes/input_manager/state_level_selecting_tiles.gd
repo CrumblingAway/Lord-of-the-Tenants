@@ -10,6 +10,7 @@ var _enter_apt_creation_button : Button
 var _exit_apt_creation_button : Button
 var _apt_creation_button : Button
 var _clear_selected_tiles_button : Button
+var _tenant_placement_error_label : RichTextLabel
 
 ########## StateLevelIdle methods. ##########
 
@@ -26,6 +27,11 @@ func init(level: Level) -> StateLevelSelectingTiles:
 	
 	_clear_selected_tiles_button = level.ui_layer.clear_selected_tiles_button
 	_clear_selected_tiles_button.pressed.connect(_on_clear_selected_tiles_button_pressed)
+	
+	_tenant_placement_error_label = level.ui_layer.tenant_placement_error_label
+	
+	if not level.building_floors[-1].tenant_apartment_mismatch.is_connected(_on_tenant_apartment_problems_received):
+		level.building_floors[-1].tenant_apartment_mismatch.connect(_on_tenant_apartment_problems_received)
 	
 	return self
 
@@ -59,3 +65,11 @@ func _on_apt_creation_button_pressed() -> void:
 
 func _on_clear_selected_tiles_button_pressed() -> void:
 	_building_floor.unreserve_all_tiles()
+
+func _on_tenant_apartment_problems_received(problems: Array) -> void:
+	var problems_text : String = "[center]" + "\n".join(problems) + "[/center]"
+	_tenant_placement_error_label.text = problems_text
+	
+	var tween = get_tree().create_tween()
+	tween.tween_property(_tenant_placement_error_label, "visible", true, 0.0)
+	tween.tween_property(_tenant_placement_error_label, "visible", false, 5.0)
