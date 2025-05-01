@@ -54,7 +54,7 @@ func _create_tenants_for_floor() -> Array:
 func _init_tenant_buttons(tenants: Array) -> void:
 	for tenant in tenants:
 		var tenant_button : UILayer.TenantButton = UILayer.TenantButton.new().init(tenant)
-		tenant_button.text = "NT: %d, NO: %d" % [tenant.noise_tolerance, tenant.noise_output]
+		tenant_button.text = "Noise Tolerance: %d\nNoise Output: %d" % [tenant.noise_tolerance, tenant.noise_output]
 		ui_layer.tenant_buttons.add_child(tenant_button)
 
 ########## Node methods. ##########
