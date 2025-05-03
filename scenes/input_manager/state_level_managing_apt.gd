@@ -13,6 +13,7 @@ var _building_floor : BuildingFloor:
 		_building_floor = new_building_floor
 
 var _level : Level
+var _apartment : Apartment
 
 ########## StateLevelPlacingTenant methods. ##########
 
@@ -31,9 +32,9 @@ func init(level: Level) -> StateLevelPlacingTenant:
 	return self
 
 func _on_tenant_selected(tenant_button: UILayer.TenantButton) -> void:
-	if _building_floor.place_tenant_in_apartment(tenant_button.tenant, _building_floor.get_highlighted_apartment()):
+	if _building_floor.place_tenant_in_apartment(tenant_button.tenant, _apartment):
 		Utils.printdbg("Tenant %s placed successfully.", func(): return [tenant_button.tenant])
-		_building_floor.mark_apartment_occupied(_building_floor.get_highlighted_apartment())
+		_building_floor.mark_apartment_occupied(_apartment)
 		_building_floor.unhighlight_adjacent_apartments_to_hovered()
 		for child in _level.ui_layer.tenant_buttons.get_children():
 			if child == tenant_button:
@@ -45,7 +46,7 @@ func _on_tenant_selected(tenant_button: UILayer.TenantButton) -> void:
 		Utils.printdbg("Failed to place tenant %s.", func(): return [tenant_button.tenant])
 
 func _on_remove_apt_button_pressed() -> void:
-	var hovered_apartment : Apartment = _building_floor.get_highlighted_apartment()
+	var hovered_apartment : Apartment = _apartment
 	if not hovered_apartment:
 		return
 	
@@ -74,6 +75,7 @@ func _on_finished_placing() -> void:
 ########## State methods. ##########
 
 func enter() -> void:
+	_apartment = _building_floor.get_highlighted_apartment()
 	for tenant_button in _level.ui_layer.tenant_buttons.get_children():
 		tenant_button = tenant_button as UILayer.TenantButton
 		if not tenant_button.pressed.is_connected(_on_tenant_selected.bind(tenant_button)):
