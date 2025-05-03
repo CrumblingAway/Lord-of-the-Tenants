@@ -72,23 +72,36 @@ func _on_finished_placing() -> void:
 	_level.ui_layer.done_button.disabled = true
 	finished_placing_tenants.emit()
 
+func _format_apt_label() -> void:
+	_level.ui_layer.apt_stats_label.text = "[center]Noise output: %d\nNoise input: %d/%s[/center]" %\
+		[
+			_apartment.get_noise_output(),
+			_building_floor.get_noise_input_in_apartment(_apartment),
+			"-" if not _apartment.tenant else str(_apartment.tenant.noise_tolerance)
+		]
+
 ########## State methods. ##########
 
 func enter() -> void:
 	_apartment = _building_floor.get_highlighted_apartment()
+	_format_apt_label()
+	_level.ui_layer.apt_stats_label.visible = true
+	
 	for tenant_button in _level.ui_layer.tenant_buttons.get_children():
 		tenant_button = tenant_button as UILayer.TenantButton
 		if not tenant_button.pressed.is_connected(_on_tenant_selected.bind(tenant_button)):
 			tenant_button.pressed.connect(_on_tenant_selected.bind(tenant_button))
 	
 	_level.ui_layer.remove_apt_button.visible = true
-	_level.ui_layer.remove_apt_button.text = "Evict" if _building_floor.get_highlighted_apartment().tenant else "Demolish"
+	_level.ui_layer.remove_apt_button.text = "Evict" if _apartment.tenant else "Demolish"
 
 func exit() -> void:
 	for tenant_button in _level.ui_layer.tenant_buttons.get_children():
 		tenant_button = tenant_button as UILayer.TenantButton
 		if tenant_button.pressed.is_connected(_on_tenant_selected):
 			tenant_button.pressed.disconnect(_on_tenant_selected)
+	
+	_level.ui_layer.apt_stats_label.visible = false
 
 func process() -> void:
 	# TODO: Maybe find way to do this using left click without conflicting with tenant button click.

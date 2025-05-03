@@ -87,3 +87,14 @@ grow_vertical = 0
 size_flags_vertical = 8
 bbcode_enabled = true
 fit_content = true
+
+[node name="apt_stats_label" type="RichTextLabel" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -185.0
+offset_right = 185.0
+offset_bottom = 40.0
+grow_horizontal = 2
+bbcode_enabled = true
+fit_content = true
