@@ -53,22 +53,6 @@ func process() -> void:
 			
 			_building_floor.highlight_adjacent_apartments_to_hovered()
 			transition_to.emit("state_level_managing_apt")
-	elif Input.is_action_just_pressed("right_click"):
-		var hovered_apartment : Apartment = _building_floor.get_apartment_at_global_position(mouse_position)
-		if hovered_apartment:
-			if not hovered_apartment.tenant:
-				_building_floor.remove_apartment_at_global_position(mouse_position)
-			else:
-				# TODO: Cleanup. Refer to Level::_init_tenant_buttons.
-				var tenant : Tenant = hovered_apartment.tenant
-				var tenant_button : UILayer.TenantButton = UILayer.TenantButton.new().init(tenant)
-				tenant_button.text = "NT: %d, NO: %d" % [tenant.noise_tolerance, tenant.noise_output]
-				_level.ui_layer.tenant_buttons.add_child(tenant_button)
-				_level.player.tenants.push_back(tenant)
-				_level.ui_layer.done_button.disabled = true
-				
-				_building_floor.clear_tenant_from_apartment(hovered_apartment)
-				_building_floor.unmark_apartment_occupied(hovered_apartment)
 
 func _on_enter_apt_creation_button_pressed() -> void:
 	_level.ui_layer.enter_apt_creation_button.pressed.disconnect(_on_enter_apt_creation_button_pressed)
