@@ -28,6 +28,8 @@ func init(level: Level) -> StateLevelPlacingTenant:
 		finished_placing_tenants.connect(level.advance_floor)
 	if not _level.ui_layer.remove_apt_button.pressed.is_connected(_on_remove_apt_button_pressed):
 		_level.ui_layer.remove_apt_button.pressed.connect(_on_remove_apt_button_pressed)
+	if not _level.ui_layer.unselect_apt_button.pressed.is_connected(_on_unselect_apt_button_pressed):
+		_level.ui_layer.unselect_apt_button.pressed.connect(_on_unselect_apt_button_pressed)
 	
 	return self
 
@@ -80,6 +82,10 @@ func _format_apt_label() -> void:
 			"-" if not _apartment.tenant else str(_apartment.tenant.noise_tolerance)
 		]
 
+func _on_unselect_apt_button_pressed() -> void:
+	_building_floor.unhighlight_adjacent_apartments_to_hovered()
+	transition_to.emit("state_level_idle")
+
 ########## State methods. ##########
 
 func enter() -> void:
@@ -94,6 +100,7 @@ func enter() -> void:
 	
 	_level.ui_layer.remove_apt_button.visible = true
 	_level.ui_layer.remove_apt_button.text = "Evict" if _apartment.tenant else "Demolish"
+	_level.ui_layer.unselect_apt_button.visible = true
 
 func exit() -> void:
 	for tenant_button in _level.ui_layer.tenant_buttons.get_children():
@@ -102,9 +109,7 @@ func exit() -> void:
 			tenant_button.pressed.disconnect(_on_tenant_selected)
 	
 	_level.ui_layer.apt_stats_label.visible = false
+	_level.ui_layer.unselect_apt_button.visible = false
 
 func process() -> void:
-	# TODO: Maybe find way to do this using left click without conflicting with tenant button click.
-	if Input.is_action_just_pressed("right_click"):
-		_building_floor.unhighlight_adjacent_apartments_to_hovered()
-		transition_to.emit("state_level_idle")
+	pass

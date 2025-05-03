@@ -30,6 +30,7 @@ func enter() -> void:
 	_level.ui_layer.clear_selected_tiles_button.visible = false
 	_level.ui_layer.remove_apt_button.visible = false
 	_level.ui_layer.tenant_placement_error_label.visible = false
+	_level.ui_layer.unselect_apt_button.visible = false
 
 func exit() -> void:
 	pass
