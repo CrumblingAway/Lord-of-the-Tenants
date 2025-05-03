@@ -58,7 +58,7 @@ func _on_remove_apt_button_pressed() -> void:
 		# TODO: Cleanup. Refer to Level::_init_tenant_buttons.
 		var tenant : Tenant = hovered_apartment.tenant
 		var tenant_button : UILayer.TenantButton = UILayer.TenantButton.new().init(tenant)
-		tenant_button.text = "NT: %d, NO: %d" % [tenant.noise_tolerance, tenant.noise_output]
+		tenant_button.text = "Noise Tolerance: %d\nNoise Output: %d" % [tenant.noise_tolerance, tenant.noise_output]
 		_level.ui_layer.tenant_buttons.add_child(tenant_button)
 		_level.player.tenants.push_back(tenant)
 		_level.ui_layer.done_button.disabled = true
