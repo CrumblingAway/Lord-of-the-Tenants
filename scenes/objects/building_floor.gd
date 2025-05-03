@@ -28,6 +28,7 @@ var _building_floor_data : BuildingFloorData
 var _highlighted_apartment : Apartment
 var _reserved_tiles : Array
 var _floor_below : BuildingFloor
+var _noise_map : Node2D
 
 ########## BuildingFloor methods. ##########
 
@@ -38,6 +39,7 @@ func init(
 ) -> BuildingFloor:
 	_building_floor_data = BuildingFloorData.new().init(height, width)
 	_floor_below = floor_below
+	_init_noise_map()
 	
 	for x in range(width):
 		for y in range(height):
@@ -179,6 +181,9 @@ func get_noise_input_in_apartment(apartment: Apartment) -> int:
 	
 	return noise_input
 
+func toggle_noise_map_display() -> void:
+	_noise_map.visible = not _noise_map.visible
+
 func _get_apartments_below(apartment: Apartment) -> Array:
 	if not _floor_below:
 		return []
@@ -224,6 +229,29 @@ func _get_apartment_floor_layer(apartment: Apartment, layer: ApartmentLayer) -> 
 
 func _clear_highlight() -> void:
 	_tilemap.clear_layer(Layer.HIGHLIGHT)
+
+func _init_noise_map() -> void:
+	_noise_map = Node2D.new()
+	
+	var tile_size : int = _tilemap.tile_set.tile_size.x
+	for row_idx in range(_building_floor_data.height):
+		for col_idx in range(_building_floor_data.width):
+			var tile_noise_label : Label = Label.new()
+			
+			tile_noise_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			tile_noise_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			var noise_label_text = "0"
+			if _floor_below:
+				var apartment_below : Apartment = _floor_below.get_apartment_at_tile_position(Vector2i(col_idx, row_idx))
+				if apartment_below:
+					noise_label_text = str(apartment_below.get_noise_output())
+			tile_noise_label.text = noise_label_text
+			tile_noise_label.set_size(Vector2(tile_size, tile_size))
+			tile_noise_label.position = Vector2(col_idx * tile_size, row_idx * tile_size)
+			_noise_map.add_child(tile_noise_label)
+	
+	add_child(_noise_map)
+	_noise_map.visible = false
 
 ########## Node2D methods. ##########
 

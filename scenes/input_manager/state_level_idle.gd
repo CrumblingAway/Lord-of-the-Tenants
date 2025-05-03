@@ -14,6 +14,7 @@ func init(level: Level) -> StateLevelIdle:
 	_building_floor = level.building_floors[-1]
 	
 	_level = level
+	_level.ui_layer.noise_map_button.pressed.connect(_on_toggle_noise_map_button_pressed)
 	
 	return self
 
@@ -41,20 +42,12 @@ func process() -> void:
 	_building_floor.highlight_apartment_at_global_position(mouse_position)
 	if Input.is_action_just_pressed("left_click"):
 		if _building_floor.get_apartment_at_global_position(mouse_position):
-			Utils.printdbg(
-				"Output noise: %d, Input noise: %s",
-				func(): 
-					var apartment : Apartment = _building_floor.get_apartment_at_global_position(mouse_position)
-					var total_noise : int = _building_floor.get_noise_input_in_apartment(apartment)
-					return [
-						apartment.get_noise_output(),
-						"%d/%d" % [total_noise, apartment.get_noise_tolerance()]
-					]
-			)
-			
 			_building_floor.highlight_adjacent_apartments_to_hovered()
 			transition_to.emit("state_level_managing_apt")
 
 func _on_enter_apt_creation_button_pressed() -> void:
 	_level.ui_layer.enter_apt_creation_button.pressed.disconnect(_on_enter_apt_creation_button_pressed)
 	transition_to.emit("state_level_selecting_tiles")
+
+func _on_toggle_noise_map_button_pressed() -> void:
+	_level.building_floors[-1].toggle_noise_map_display()

@@ -82,6 +82,15 @@ offset_right = 60.0
 offset_bottom = 15.256
 text = "Cancel"
 
+[node name="noise_map_button" type="Button" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -31.0
+offset_right = 91.0
+grow_vertical = 0
+text = "Noise map"
+
 [node name="tenant_placement_error_label" type="RichTextLabel" parent="."]
 anchors_preset = -1
 anchor_left = 0.29

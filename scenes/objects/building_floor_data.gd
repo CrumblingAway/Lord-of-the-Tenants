@@ -2,8 +2,16 @@ class_name BuildingFloorData extends Object
 
 ########## Fields. ##########
 
-var _height: int
-var _width: int
+var height: int:
+	get:
+		return height
+	set(other_height):
+		height = other_height
+var width: int:
+	get:
+		return width
+	set(other_width):
+		width = other_width
 var apartments : Array:
 	get:
 		return apartments
@@ -13,11 +21,11 @@ var apartments : Array:
 ########## BuildingFloor methods. ##########
 
 func init(
-	height: int,
-	width: int
+	other_height: int,
+	other_width: int
 ) -> BuildingFloorData:
-	_height = height
-	_width = width
+	height = other_height
+	width = other_width
 	
 	return self
 
