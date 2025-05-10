@@ -47,7 +47,7 @@ func _create_tenants_for_floor() -> Array:
 	tenants.resize(num_tenants)
 	
 	for i in range(num_tenants):
-		tenants[i] = Tenant.new().init(Utils.rand_int_range(1, num_tenants), 1)
+		tenants[i] = Tenant.new().init(Utils.rand_int_range(1, 10), Utils.rand_int_range(1, 5))
 	
 	return tenants
 
