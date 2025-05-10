@@ -14,7 +14,8 @@ func init(level: Level) -> StateLevelIdle:
 	_building_floor = level.building_floors[-1]
 	
 	_level = level
-	_level.ui_layer.noise_map_button.pressed.connect(_on_toggle_noise_map_button_pressed)
+	if not _level.ui_layer.noise_map_button.pressed.is_connected(_on_toggle_noise_map_button_pressed):
+		_level.ui_layer.noise_map_button.pressed.connect(_on_toggle_noise_map_button_pressed)
 	
 	return self
 
