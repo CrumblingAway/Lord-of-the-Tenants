@@ -175,14 +175,24 @@ func get_noise_input_in_apartment(apartment: Apartment) -> int:
 	var adjacent_apartments : Array = _building_floor_data.get_adjacent_apartments(apartment)
 	for adjacent_apartment in adjacent_apartments:
 		noise_input += adjacent_apartment.get_noise_output()
-	var below_apartments : Array = _get_apartments_below(apartment)
-	for apartment_below in below_apartments:
-		noise_input += apartment_below.get_noise_output()
+	
+	var noise_from_below : int = 0
+	for tile in apartment.tiles:
+		var apartment_below : Apartment = _get_apartment_below(tile)
+		if apartment_below:
+			noise_from_below += _floor_below.get_apartment_at_tile_position(tile).get_noise_output()
+	noise_from_below = ceil(float(noise_from_below) / apartment.tiles.size())
+	noise_input += noise_from_below
 	
 	return noise_input
 
 func toggle_noise_map_display() -> void:
 	_noise_map.visible = not _noise_map.visible
+
+func _get_apartment_below(tile: Vector2i) -> Apartment:
+	if _floor_below:
+		return _floor_below.get_apartment_at_tile_position(tile)
+	return null
 
 func _get_apartments_below(apartment: Apartment) -> Array:
 	if not _floor_below:
