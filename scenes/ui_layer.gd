@@ -15,9 +15,28 @@ class_name UILayer extends CanvasLayer
 func _ready() -> void:
 	pass
 
-class TenantButton extends Button:
+class TenantButton extends RichTextLabel:
 	var tenant: Tenant
+	var button: Button
 	
-	func init(other_tenant: Tenant) -> TenantButton:
+	func init(
+		other_tenant: Tenant,
+		configs: Configs
+	) -> TenantButton:
 		tenant = other_tenant
+		
+		bbcode_enabled = true
+		button = Button.new()
+		text = "[color=#%s]Noise Tolerance: %d[/color]\n[color=#%s]Noise Output: %d[/color]" % [
+			configs.noise_input_text_color.to_html(false),
+			tenant.noise_tolerance,
+			configs.noise_output_text_color.to_html(false),
+			tenant.noise_output
+		]
+		autowrap_mode = TextServer.AUTOWRAP_OFF
+		fit_content = true
+		
+		button.set_anchors_preset(PRESET_FULL_RECT)
+		add_child(button)
+		
 		return self

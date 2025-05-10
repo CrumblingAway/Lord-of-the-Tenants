@@ -1,11 +1,12 @@
 class_name TestLevelFlow extends Test
 
+@export var configs : Configs
 @onready var level : Level = $level
 
 ########## Test methods. ##########
 
 func run() -> void:
-	level.init(5, 5)
+	level.init(configs, 5, 5)
 	level.advance_floor()
 
 func get_test_name() -> String:

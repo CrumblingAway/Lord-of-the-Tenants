@@ -8,15 +8,19 @@ class_name Level extends Node
 @onready var player : Player = $player
 @onready var ui_layer : UILayer = $ui_layer
 
+var _configs : Configs
+
 var _floor_height: int
 var _floor_width: int
 
 ########## Level methods. ##########
 
 func init(
+	configs: Configs,
 	other_floor_height: int,
 	other_floor_width: int
 ) -> Level:
+	_configs = configs
 	_floor_height = other_floor_height
 	_floor_width = other_floor_width
 	
@@ -53,9 +57,13 @@ func _create_tenants_for_floor() -> Array:
 
 func _init_tenant_buttons(tenants: Array) -> void:
 	for tenant in tenants:
-		var tenant_button : UILayer.TenantButton = UILayer.TenantButton.new().init(tenant)
-		tenant_button.text = "Noise Tolerance: %d\nNoise Output: %d" % [tenant.noise_tolerance, tenant.noise_output]
+		var tenant_button : UILayer.TenantButton = UILayer.TenantButton.new().init(tenant, _configs)
 		ui_layer.tenant_buttons.add_child(tenant_button)
+
+func on_tenant_evicted(tenant: Tenant) -> void:
+	var tenant_button : UILayer.TenantButton = UILayer.TenantButton.new().init(tenant, _configs)
+	ui_layer.tenant_buttons.add_child(tenant_button)
+	player.tenants.push_back(tenant)
 
 ########## Node methods. ##########
 

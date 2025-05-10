@@ -3,6 +3,7 @@ class_name StateLevelPlacingTenant extends State
 ########## Signals. ##########
 
 signal finished_placing_tenants
+signal add_tenant_back(tenant: Tenant)
 
 ########## Fields. ##########
 
@@ -31,6 +32,9 @@ func init(level: Level) -> StateLevelPlacingTenant:
 	if not _level.ui_layer.unselect_apt_button.pressed.is_connected(_on_unselect_apt_button_pressed):
 		_level.ui_layer.unselect_apt_button.pressed.connect(_on_unselect_apt_button_pressed)
 	
+	if not add_tenant_back.is_connected(_level.on_tenant_evicted):
+		add_tenant_back.connect(_level.on_tenant_evicted)
+	
 	return self
 
 func _on_tenant_selected(tenant_button: UILayer.TenantButton) -> void:
@@ -56,11 +60,7 @@ func _on_remove_apt_button_pressed() -> void:
 		_building_floor.remove_apartment(hovered_apartment)
 	else:
 		# TODO: Cleanup. Refer to Level::_init_tenant_buttons.
-		var tenant : Tenant = hovered_apartment.tenant
-		var tenant_button : UILayer.TenantButton = UILayer.TenantButton.new().init(tenant)
-		tenant_button.text = "Noise Tolerance: %d\nNoise Output: %d" % [tenant.noise_tolerance, tenant.noise_output]
-		_level.ui_layer.tenant_buttons.add_child(tenant_button)
-		_level.player.tenants.push_back(tenant)
+		add_tenant_back.emit(hovered_apartment.tenant)
 		_level.ui_layer.done_button.disabled = true
 		
 		_building_floor.clear_tenant_from_apartment(hovered_apartment)
@@ -95,8 +95,8 @@ func enter() -> void:
 	
 	for tenant_button in _level.ui_layer.tenant_buttons.get_children():
 		tenant_button = tenant_button as UILayer.TenantButton
-		if not tenant_button.pressed.is_connected(_on_tenant_selected.bind(tenant_button)):
-			tenant_button.pressed.connect(_on_tenant_selected.bind(tenant_button))
+		if not tenant_button.button.pressed.is_connected(_on_tenant_selected.bind(tenant_button)):
+			tenant_button.button.pressed.connect(_on_tenant_selected.bind(tenant_button))
 	
 	_level.ui_layer.remove_apt_button.visible = true
 	_level.ui_layer.remove_apt_button.text = "Evict" if _apartment.tenant else "Demolish"
@@ -105,8 +105,8 @@ func enter() -> void:
 func exit() -> void:
 	for tenant_button in _level.ui_layer.tenant_buttons.get_children():
 		tenant_button = tenant_button as UILayer.TenantButton
-		if tenant_button.pressed.is_connected(_on_tenant_selected):
-			tenant_button.pressed.disconnect(_on_tenant_selected)
+		if tenant_button.button.pressed.is_connected(_on_tenant_selected):
+			tenant_button.button.pressed.disconnect(_on_tenant_selected)
 	
 	_level.ui_layer.apt_stats_label.visible = false
 	_level.ui_layer.unselect_apt_button.visible = false
