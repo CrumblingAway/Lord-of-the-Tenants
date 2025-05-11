@@ -37,6 +37,20 @@ class TenantButton extends RichTextLabel:
 		fit_content = true
 		
 		button.set_anchors_preset(PRESET_FULL_RECT)
+		
+		var normal_stylebox : StyleBoxFlat = StyleBoxFlat.new()
+		normal_stylebox.bg_color = Color(0, 0, 0, 0)
+		button.add_theme_stylebox_override("normal", normal_stylebox)
+		
+		var hover_stylebox : StyleBoxFlat = StyleBoxFlat.new()
+		hover_stylebox.border_color = Color(1, 1, 1, 1)
+		hover_stylebox.border_width_top    = 2
+		hover_stylebox.border_width_bottom = 2
+		hover_stylebox.border_width_left   = 2
+		hover_stylebox.border_width_right  = 2
+		hover_stylebox.bg_color = Color(0, 0, 0, 0)
+		button.add_theme_stylebox_override("hover", hover_stylebox)
+		
 		add_child(button)
 		
 		return self
