@@ -17,3 +17,5 @@ mono_crash.*.json
 *.exe
 *.pck
 
+todo.txt
+
