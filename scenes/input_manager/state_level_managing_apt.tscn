@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d4eabrhookse2"]
 
-[ext_resource type="Script" path="res://scenes/input_manager/state_level_managing_apt.gd" id="1_nmioc"]
+[ext_resource type="Script" uid="uid://c8w1taehatuof" path="res://scenes/input_manager/state_level_managing_apt.gd" id="1_nmioc"]
 
 [node name="state_level_placing_tenant" type="Node"]
 script = ExtResource("1_nmioc")

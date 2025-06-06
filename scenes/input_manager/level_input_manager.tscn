@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bvlbnhi3xdsa7"]
 
-[ext_resource type="Script" path="res://scenes/input_manager/level_input_manager.gd" id="1_pdd0t"]
+[ext_resource type="Script" uid="uid://cybxwjw1bk7vu" path="res://scenes/input_manager/level_input_manager.gd" id="1_pdd0t"]
 [ext_resource type="PackedScene" uid="uid://cxosn5idm1rca" path="res://scenes/input_manager/state_level_idle.tscn" id="2_r0e3w"]
 [ext_resource type="PackedScene" uid="uid://qq10cebpr2tn" path="res://scenes/input_manager/state_level_selecting_tiles.tscn" id="3_pcui3"]
 [ext_resource type="PackedScene" uid="uid://d4eabrhookse2" path="res://scenes/input_manager/state_level_managing_apt.tscn" id="4_imt0a"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://boe18vm8vjjec"]
 
-[ext_resource type="Script" path="res://scenes/objects/building_floor.gd" id="1_so2po"]
+[ext_resource type="Script" uid="uid://beabm4q71dg5n" path="res://scenes/objects/building_floor.gd" id="1_so2po"]
 [ext_resource type="TileSet" uid="uid://bwqrge56n5qou" path="res://assets/sprites/building_tileset.tres" id="2_78os0"]
 
 [node name="building_floor" type="Node2D"]
