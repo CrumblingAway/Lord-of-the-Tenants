@@ -118,3 +118,9 @@ offset_bottom = 40.0
 grow_horizontal = 2
 bbcode_enabled = true
 fit_content = true
+
+[node name="money_label" type="RichTextLabel" parent="."]
+offset_right = 370.0
+offset_bottom = 40.0
+bbcode_enabled = true
+fit_content = true

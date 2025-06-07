@@ -11,9 +11,13 @@ class_name UILayer extends CanvasLayer
 @onready var noise_map_button : Button = $noise_map_button
 @onready var tenant_placement_error_label : RichTextLabel = $tenant_placement_error_label
 @onready var apt_stats_label : RichTextLabel = $apt_stats_label
+@onready var money_label : RichTextLabel = $money_label
 
 func _ready() -> void:
 	pass
+
+func _on_player_money_changed(money: int) -> void:
+	money_label.text = "Money: %d$" % money
 
 class TenantButton extends RichTextLabel:
 	var tenant: Tenant

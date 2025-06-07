@@ -23,6 +23,8 @@ func init(
 	_configs = configs
 	_floor_height = other_floor_height
 	_floor_width = other_floor_width
+
+	player.money_changed.connect(ui_layer._on_player_money_changed)
 	
 	return self
 
@@ -39,6 +41,7 @@ func advance_floor() -> void:
 	building_floors.push_back(new_building_floor)
 	if building_floors.size() == 1:
 		camera.global_position = Vector2(_floor_width, _floor_height) * new_building_floor._tilemap.tile_set.tile_size.x / 2
+		player.money = _configs.initial_player_money
 	
 	player.tenants = _create_tenants_for_floor()
 	_init_tenant_buttons(player.tenants)
